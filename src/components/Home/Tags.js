@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import agent from '../../agent';
 
-const StyledTagsList = styled.div`
+const TagsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
 `;
 
-const StyledTag = styled.a`
+const Tag = styled.a`
   padding: 4px 8px;
   background: #292929;
   border-radius: 2px;
@@ -21,7 +21,7 @@ const tags = ['Tag', 'tag', 'TAG', 'React', 'Tag', 'tag', 'TAG'];
 
 const Tags = ({ onClickTag }) => {
   return (
-    <StyledTagsList>
+    <TagsList>
       {tags
         ? tags.map((tag) => {
             const handleClick = (ev) => {
@@ -34,13 +34,13 @@ const Tags = ({ onClickTag }) => {
             };
 
             return (
-              <StyledTag href='' key={tag} onClick={handleClick}>
+              <Tag href='' key={tag} onClick={handleClick}>
                 {tag}
-              </StyledTag>
+              </Tag>
             );
           })
         : 'Loading Tags...'}
-    </StyledTagsList>
+    </TagsList>
   );
 };
 

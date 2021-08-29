@@ -26,13 +26,13 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: HOME_PAGE_UNLOADED }),
 });
 
-const StyledSection = styled.section`
+const Section = styled.section`
   display: flex;
   justify-content: center;
   margin-top: 32px;
 `;
 
-const StyledContainer = styled.div`
+const Container = styled.div`
   display: flex;
   max-width: 1140px;
   width: 100%;
@@ -40,12 +40,12 @@ const StyledContainer = styled.div`
   align-items: flex-start;
 `;
 
-const StyledMain = styled.main`
+const Main = styled.main`
   width: 75%;
   margin: 0 16px;
 `;
 
-const StyledSidebar = styled.div`
+const Sidebar = styled.div`
   background-color: var(--bg-color-secondary);
   width: 25%;
   margin: 0 16px;
@@ -69,17 +69,17 @@ class Home extends React.Component {
     return (
       <div className='home-page'>
         <Banner token={this.props.token} appName={this.props.appName} />
-        <StyledSection>
-          <StyledContainer>
-            <StyledMain>
+        <Section>
+          <Container>
+            <Main>
               <MainView />
-            </StyledMain>
-            <StyledSidebar>
+            </Main>
+            <Sidebar>
               <p>Популярные теги</p>
               <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-            </StyledSidebar>
-          </StyledContainer>
-        </StyledSection>
+            </Sidebar>
+          </Container>
+        </Section>
       </div>
     );
   }

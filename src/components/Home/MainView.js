@@ -5,12 +5,12 @@ import agent from '../../agent';
 import { connect } from 'react-redux';
 import { CHANGE_TAB } from '../../constants/actionTypes';
 
-const StyledNav = styled.ul`
+const TabsList = styled.ul`
   display: flex;
   box-shadow: inset 0px -1px 0px #1f1f1f;
 `;
 
-const StyledTab = styled.a`
+const Tab = styled.a`
   padding: 16px 24px;
   color: var(--color-inactive);
   display: block;
@@ -33,9 +33,9 @@ const YourFeedTab = (props) => {
 
     return (
       <li>
-        <StyledTab href='' active={props.tab === 'feed'} onClick={clickHandler}>
-          Your Feed
-        </StyledTab>
+        <Tab href='' active={props.tab === 'feed'} onClick={clickHandler}>
+          Ваша лента
+        </Tab>
       </li>
     );
   }
@@ -49,9 +49,9 @@ const GlobalFeedTab = (props) => {
   };
   return (
     <li>
-      <StyledTab href='' active={props.tab === 'all'} onClick={clickHandler}>
-        Global Feed
-      </StyledTab>
+      <Tab href='' active={props.tab === 'all'} onClick={clickHandler}>
+        Лента
+      </Tab>
     </li>
   );
 };
@@ -62,10 +62,10 @@ const TagFilterTab = (props) => {
   }
 
   return (
-    <li className='nav-item'>
-      <StyledTab href='' active>
+    <li>
+      <Tab href='' active>
         #{props.tag}
-      </StyledTab>
+      </Tab>
     </li>
   );
 };
@@ -83,11 +83,11 @@ const mapDispatchToProps = (dispatch) => ({
 const MainView = (props) => {
   return (
     <React.Fragment>
-      <StyledNav>
+      <TabsList>
         <YourFeedTab tab={props.tab} onTabClick={props.onTabClick} token={props.token} />
         <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
         <TagFilterTab tag={props.tag} />
-      </StyledNav>
+      </TabsList>
 
       <ArticleList
         pager={props.pager}
