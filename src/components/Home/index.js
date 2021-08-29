@@ -2,6 +2,8 @@ import Banner from './Banner';
 import MainView from './MainView';
 import React from 'react';
 import Tags from './Tags';
+
+import styled from 'styled-components';
 import agent from '../../agent';
 import { connect } from 'react-redux';
 import {
@@ -24,6 +26,33 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: HOME_PAGE_UNLOADED }),
 });
 
+const StyledSection = styled.section`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  max-width: 1140px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const StyledMain = styled.main`
+  width: 75%;
+  margin: 0 16px;
+`;
+
+const StyledSidebar = styled.div`
+  background-color: var(--bg-color-secondary);
+  width: 25%;
+  margin: 0 16px;
+  padding: 16px;
+  font-weight: bold;
+`;
+
 class Home extends React.Component {
   componentWillMount() {
     const tab = this.props.token ? 'feed' : 'all';
@@ -40,17 +69,17 @@ class Home extends React.Component {
     return (
       <div className='home-page'>
         <Banner token={this.props.token} appName={this.props.appName} />
-        <div className='container page'>
-          <div className='row'>
-            <MainView />
-            <div className='col-md-3'>
-              <div className='sidebar'>
-                <p>Popular Tags</p>
-                <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <StyledSection>
+          <StyledContainer>
+            <StyledMain>
+              <MainView />
+            </StyledMain>
+            <StyledSidebar>
+              <p>Популярные теги</p>
+              <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
+            </StyledSidebar>
+          </StyledContainer>
+        </StyledSection>
       </div>
     );
   }
