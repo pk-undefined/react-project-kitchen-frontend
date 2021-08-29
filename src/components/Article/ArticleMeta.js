@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import like from "../../images/like.svg";
 import likeActive from "../../images/like-active.svg";
-import defaultAvatar from "../../images/default-avatar.svg";
 import agent from "../../agent";
 import { connect } from "react-redux";
 import {
