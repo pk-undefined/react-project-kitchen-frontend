@@ -15,7 +15,8 @@ import {
 const Promise = global.Promise;
 
 const mapStateToProps = (state) => ({
-  ...state.home,
+  tag: state.articleList.tag,
+  tags: state.home.tags,
   appName: state.common.appName,
   token: state.common.token,
 });
@@ -29,7 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
 const Section = styled.section`
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  padding: 32px 0;
 `;
 
 const Container = styled.div`
@@ -53,36 +54,32 @@ const Sidebar = styled.div`
   font-weight: bold;
 `;
 
-class Home extends React.Component {
-  componentWillMount() {
-    const tab = this.props.token ? 'feed' : 'all';
-    const articlesPromise = this.props.token ? agent.Articles.feed : agent.Articles.all;
+const Home = (props) => {
+  React.useEffect(() => {
+    const tab = props.token ? 'feed' : 'all';
+    const articlesPromise = props.token ? agent.Articles.feed : agent.Articles.all;
+    props.onLoad(tab, articlesPromise, Promise.all([agent.Tags.getAll(), articlesPromise()]));
 
-    this.props.onLoad(tab, articlesPromise, Promise.all([agent.Tags.getAll(), articlesPromise()]));
-  }
+    return () => {
+      props.onUnload();
+    };
+  }, []);
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
-
-  render() {
-    return (
-      <div className='home-page'>
-        <Banner token={this.props.token} appName={this.props.appName} />
-        <Section>
-          <Container>
-            <Main>
-              <MainView />
-            </Main>
-            <Sidebar>
-              <p>Популярные теги</p>
-              <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-            </Sidebar>
-          </Container>
-        </Section>
-      </div>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <Banner token={props.token} appName={props.appName} />
+      <Section>
+        <Container>
+          <Main>
+            <MainView />
+          </Main>
+          <Sidebar>
+            <Tags activeTag={props.tag} tags={props.tags} onClickTag={props.onClickTag} />
+          </Sidebar>
+        </Container>
+      </Section>
+    </React.Fragment>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
