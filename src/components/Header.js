@@ -1,90 +1,115 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-const LoggedOutView = props => {
-  if (!props.currentUser) {
-    return (
-      <ul className="nav navbar-nav pull-xs-right">
+import icons from './UI/icons/icons';
 
-        <li className="nav-item">
-          <Link to="/" className="nav-link">
-            Home
-          </Link>
-        </li>
+const { HomeIcon, SettingsIcon, EditIcon, Avatar, LogInIcon } = icons;
 
-        <li className="nav-item">
-          <Link to="/login" className="nav-link">
-            Sign in
-          </Link>
-        </li>
+const StyledHeader = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color-secondary);
+`;
 
-        <li className="nav-item">
-          <Link to="/register" className="nav-link">
-            Sign up
-          </Link>
-        </li>
+const StyledContainer = styled.div`
+  display: flex;
+  max-width: 1140px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+`;
 
-      </ul>
-    );
+const StyledLogo = styled(Link)`
+  display: flex;
+  align-items: center;
+  color: var(--color-default);
+  font-size: 16px;
+  line-height: 28px;
+  font-family: 'Press Start 2P';
+`;
+
+const StyledNav = styled.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  color: ${(props) => (props.active ? 'var(--color-default)' : 'var(--color-inactive)')};
+
+  :hover {
+    color: var(--color-default);
   }
-  return null;
+
+  .avatar {
+    margin-right: 8px;
+  }
+
+  .navIcon {
+    margin-right: 8px;
+  }
+`;
+
+const NavLink = (props) => {
+  return (
+    <li>
+      <StyledLink {...props}>{props.children}</StyledLink>
+    </li>
+  );
 };
 
-const LoggedInView = props => {
-  if (props.currentUser) {
-    return (
-      <ul className="nav navbar-nav pull-xs-right">
-
-        <li className="nav-item">
-          <Link to="/" className="nav-link">
-            Home
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link to="/editor" className="nav-link">
-            <i className="ion-compose"></i>&nbsp;New Post
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link to="/settings" className="nav-link">
-            <i className="ion-gear-a"></i>&nbsp;Settings
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            to={`/@${props.currentUser.username}`}
-            className="nav-link">
-            <span>Hello, {props.currentUser.username}</span>
-          </Link>
-        </li>
-
-      </ul>
-    );
-  }
-
-  return null;
+const LoggedOutView = (props) => {
+  return (
+    <React.Fragment>
+      <NavLink to='/login'>
+        <LogInIcon className='navIcon' /> Войти
+      </NavLink>
+    </React.Fragment>
+  );
 };
 
-class Header extends React.Component {
-  render() {
-    return (
-      <nav className="navbar navbar-light">
-        <div className="container">
+const LoggedInView = (props) => {
+  return (
+    <React.Fragment>
+      <NavLink to='/editor'>
+        <EditIcon className='navIcon' /> Новая запись
+      </NavLink>
 
-          <Link to="/" className="navbar-brand">
-            {this.props.appName.toLowerCase()}
-          </Link>
+      <NavLink to='/settings'>
+        <SettingsIcon className='navIcon' /> Настройки
+      </NavLink>
 
-          <LoggedOutView currentUser={this.props.currentUser} />
+      <NavLink to={`/@${props.currentUser.username}`}>
+        <Avatar className='avatar' /> {props.currentUser.username}
+      </NavLink>
+    </React.Fragment>
+  );
+};
 
-          <LoggedInView currentUser={this.props.currentUser} />
-        </div>
-      </nav>
-    );
-  }
-}
+const Header = (props) => {
+  return (
+    <StyledHeader>
+      <StyledContainer>
+        <StyledLogo to='/'>Проектная кухня</StyledLogo>
+        <StyledNav>
+          <NavLink to='/' active>
+            <HomeIcon className='navIcon' /> Главная
+          </NavLink>
+          {props.currentUser ? (
+            <LoggedInView currentUser={props.currentUser} />
+          ) : (
+            <LoggedOutView currentUser={props.currentUser} />
+          )}
+        </StyledNav>
+      </StyledContainer>
+    </StyledHeader>
+  );
+};
 
 export default Header;

@@ -1,95 +1,102 @@
 import ArticleList from '../ArticleList';
 import React from 'react';
+import styled, { css } from 'styled-components';
 import agent from '../../agent';
 import { connect } from 'react-redux';
 import { CHANGE_TAB } from '../../constants/actionTypes';
 
-const YourFeedTab = props => {
+const TabsList = styled.ul`
+  display: flex;
+  box-shadow: inset 0px -1px 0px #1f1f1f;
+`;
+
+const Tab = styled.a`
+  padding: 16px 24px;
+  color: var(--color-inactive);
+  display: block;
+  font-weight: bold;
+
+  ${(props) =>
+    props.active &&
+    css`
+      color: var(--color-default);
+      box-shadow: inset 0px -2px 0px var(--color-accent);
+    `}
+`;
+
+const YourFeedTab = (props) => {
   if (props.token) {
-    const clickHandler = ev => {
+    const clickHandler = (ev) => {
       ev.preventDefault();
       props.onTabClick('feed', agent.Articles.feed, agent.Articles.feed());
-    }
+    };
 
     return (
-      <li className="nav-item">
-        <a  href=""
-            className={ props.tab === 'feed' ? 'nav-link active' : 'nav-link' }
-            onClick={clickHandler}>
-          Your Feed
-        </a>
+      <li>
+        <Tab href='' active={props.tab === 'feed'} onClick={clickHandler}>
+          Ваша лента
+        </Tab>
       </li>
     );
   }
   return null;
 };
 
-const GlobalFeedTab = props => {
-  const clickHandler = ev => {
+const GlobalFeedTab = (props) => {
+  const clickHandler = (ev) => {
     ev.preventDefault();
     props.onTabClick('all', agent.Articles.all, agent.Articles.all());
   };
   return (
-    <li className="nav-item">
-      <a
-        href=""
-        className={ props.tab === 'all' ? 'nav-link active' : 'nav-link' }
-        onClick={clickHandler}>
-        Global Feed
-      </a>
+    <li>
+      <Tab href='' active={props.tab === 'all'} onClick={clickHandler}>
+        Лента
+      </Tab>
     </li>
   );
 };
 
-const TagFilterTab = props => {
+const TagFilterTab = (props) => {
   if (!props.tag) {
     return null;
   }
 
   return (
-    <li className="nav-item">
-      <a href="" className="nav-link active">
-        <i className="ion-pound"></i> {props.tag}
-      </a>
+    <li>
+      <Tab href='' active>
+        #{props.tag}
+      </Tab>
     </li>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   ...state.articleList,
   tags: state.home.tags,
-  token: state.common.token
+  token: state.common.token,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload })
+const mapDispatchToProps = (dispatch) => ({
+  onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload }),
 });
 
-const MainView = props => {
+const MainView = (props) => {
   return (
-    <div className="col-md-9">
-      <div className="feed-toggle">
-        <ul className="nav nav-pills outline-active">
-
-          <YourFeedTab
-            token={props.token}
-            tab={props.tab}
-            onTabClick={props.onTabClick} />
-
-          <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
-
-          <TagFilterTab tag={props.tag} />
-
-        </ul>
-      </div>
+    <React.Fragment>
+      <TabsList>
+        <YourFeedTab tab={props.tab} onTabClick={props.onTabClick} token={props.token} />
+        <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
+        <TagFilterTab tag={props.tag} />
+      </TabsList>
 
       <ArticleList
         pager={props.pager}
         articles={props.articles}
         loading={props.loading}
         articlesCount={props.articlesCount}
-        currentPage={props.currentPage} />
-    </div>
+        currentPage={props.currentPage}
+      />
+    </React.Fragment>
   );
 };
 
