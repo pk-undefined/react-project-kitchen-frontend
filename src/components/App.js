@@ -7,13 +7,14 @@ import { Route, Switch } from 'react-router-dom';
 import Article from '../components/Article';
 import Editor from '../components/Editor';
 import Home from '../components/Home';
-import Login from '../components/Login';
+import Login from './Form/Login';
 import Profile from '../components/Profile';
 import ProfileFavorites from '../components/ProfileFavorites';
-import Register from '../components/Register';
+import Register from '../components/Form/Register';
 import Settings from '../components/Settings';
 import { store } from '../store';
 import { push } from 'react-router-redux';
+import styled from 'styled-components';
 
 const mapStateToProps = state => {
   return {
@@ -29,6 +30,12 @@ const mapDispatchToProps = dispatch => ({
   onRedirect: () =>
     dispatch({ type: REDIRECT })
 });
+
+const Wrapped = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 class App extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -51,7 +58,7 @@ class App extends React.Component {
   render() {
     if (this.props.appLoaded) {
       return (
-        <div>
+        <Wrapped>
           <Header
             appName={this.props.appName}
             currentUser={this.props.currentUser} />
@@ -66,15 +73,15 @@ class App extends React.Component {
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
             </Switch>
-        </div>
+        </Wrapped>
       );
     }
     return (
-      <div>
+      <Wrapped>
         <Header
           appName={this.props.appName}
           currentUser={this.props.currentUser} />
-      </div>
+      </Wrapped>
     );
   }
 }
