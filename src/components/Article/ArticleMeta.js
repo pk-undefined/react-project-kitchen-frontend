@@ -1,26 +1,27 @@
-import ArticleActions from "./ArticleActions";
-import React from "react";
-import styled from "styled-components";
-import UserInfo from "../UserInfo";
-import Like from "../Like";
+import ArticleActions from './ArticleActions';
+import { Link } from 'react-router-dom';
+import React from 'react';
 
-const ArticleMeta = (props) => {
+const ArticleMeta = props => {
   const article = props.article;
-
   return (
-    <StyledArticleMeta>
-      <UserInfo article={article}/>
-      {!props.canModify && <Like article={article} />}
+    <div className="article-meta">
+      <Link to={`/@${article.author.username}`}>
+        <img src={article.author.image} alt={article.author.username} />
+      </Link>
+
+      <div className="info">
+        <Link to={`/@${article.author.username}`} className="author">
+          {article.author.username}
+        </Link>
+        <span className="date">
+          {new Date(article.createdAt).toDateString()}
+        </span>
+      </div>
+
       <ArticleActions canModify={props.canModify} article={article} />
-    </StyledArticleMeta>
+    </div>
   );
 };
-
-const StyledArticleMeta = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 export default ArticleMeta;
