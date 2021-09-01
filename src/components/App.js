@@ -8,10 +8,10 @@ import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import Article from './Article';
 import Editor from './Editor';
 import Home from './Home';
-import Login from './Login';
+import Login from './Form/Login';
 import { Profile } from './Profile';
 import ProfileFavorites from './ProfileFavorites';
-import Register from './Register';
+import Register from './Form/Register';
 import Settings from './Settings';
 import { store } from '../store';
 
