@@ -1,32 +1,30 @@
-import React from "react";
-import styled from "styled-components";
-import like from "../images/like.svg";
-import likeActive from "../images/like-active.svg";
-import agent from "../agent";
-import { connect } from "react-redux";
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import like from '../images/like.svg';
+import likeActive from '../images/like-active.svg';
+import agent from '../agent';
 import {
   ARTICLE_FAVORITED,
   ARTICLE_UNFAVORITED,
-} from "../constants/actionTypes";
+} from '../constants/actionTypes';
 
 const mapDispatchToProps = (dispatch) => ({
-  favorite: (slug) =>
-    dispatch({
-      type: ARTICLE_FAVORITED,
-      payload: agent.Articles.favorite(slug),
-    }),
-  unfavorite: (slug) =>
-    dispatch({
-      type: ARTICLE_UNFAVORITED,
-      payload: agent.Articles.unfavorite(slug),
-    }),
+  favorite: (slug) => dispatch({
+    type: ARTICLE_FAVORITED,
+    payload: agent.Articles.favorite(slug),
+  }),
+  unfavorite: (slug) => dispatch({
+    type: ARTICLE_UNFAVORITED,
+    payload: agent.Articles.unfavorite(slug),
+  }),
 });
 
 const Like = (props) => {
-  const article = props.article;
+  const { article } = props;
   const handleClick = (ev) => {
     ev.preventDefault();
-    console.log("click");
+    console.log('click');
     if (article.favorited) {
       props.unfavorite(article.slug);
     } else {
@@ -44,7 +42,6 @@ const Like = (props) => {
   );
 };
 
-
 const StyledLike = styled.div`
   display: flex;
   flex-direction: row;
@@ -60,8 +57,8 @@ const Counter = styled.p`
   font-weight: 450;
   margin: 0 9px 0 0;
   padding: 0;
-  display: ${(props) => (props.count > 0 ? "block" : "none")};
-  color: ${(props) => (props.article.favorited ? "#ff0000" : "#f3f3f3")};
+  display: ${(props) => (props.count > 0 ? 'block' : 'none')};
+  color: ${(props) => (props.article.favorited ? '#ff0000' : '#f3f3f3')};
 `;
 
 const LikeButton = styled.button`
@@ -72,8 +69,7 @@ const LikeButton = styled.button`
   box-shadow: none;
   border: none;
   background: center/contain
-    ${(props) =>
-      props.article.favorited ? `url(${likeActive})` : `url(${like})`}
+    ${(props) => (props.article.favorited ? `url(${likeActive})` : `url(${like})`)}
     no-repeat transparent;
   transition: opacity 0.5s linear;
   &:hover {

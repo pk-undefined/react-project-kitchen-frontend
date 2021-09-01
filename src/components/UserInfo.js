@@ -1,23 +1,21 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const UserInfo = ({article}) => {
-  return (
-    <StyledUserInfo>
-      <UserAvatar
-        to={`/@${article.author.username}`}
-        avatar={article.author.image}
-      />
-      <AuthorLink className="author" to={`/@${article.author.username}`}>
-        {article.author.username}
-      </AuthorLink>
-      <PublicationDate>
-        {new Date(article.createdAt).toDateString()}
-      </PublicationDate>
-    </StyledUserInfo>
-  );
-};
+const UserInfo = ({ article }) => (
+  <StyledUserInfo>
+    <UserAvatar
+      to={`/@${article.author.username}`}
+      avatar={article.author.image}
+    />
+    <AuthorLink className="author" to={`/@${article.author.username}`}>
+      {article.author.username}
+    </AuthorLink>
+    <PublicationDate>
+      {new Date(article.createdAt).toDateString()}
+    </PublicationDate>
+  </StyledUserInfo>
+);
 
 const StyledUserInfo = styled.div`
   display: grid;
@@ -35,6 +33,7 @@ const UserAvatar = styled(Link)`
   grid-row: 1/3;
   background: center/cover url(${(props) => props.avatar}) no-repeat;
   transition: opacity 0.5s linear;
+
   &:hover {
     opacity: 0.7;
     cursor: pointer;
@@ -51,6 +50,7 @@ const AuthorLink = styled(Link)`
   grid-column: 2;
   grid-row: 1;
   transition: opacity 0.5s linear;
+
   &:hover {
     opacity: 0.7;
     cursor: pointer;
