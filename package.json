@@ -10,7 +10,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "cross-env": "^5.1.4"
   },
   "dependencies": {
     "history": "^4.6.3",
