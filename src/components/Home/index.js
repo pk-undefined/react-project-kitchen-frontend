@@ -1,18 +1,18 @@
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 import Banner from './Banner';
 import MainView from './MainView';
-import React from 'react';
 import Tags from './Tags';
 
-import styled from 'styled-components';
 import agent from '../../agent';
-import { connect } from 'react-redux';
 import {
   HOME_PAGE_LOADED,
   HOME_PAGE_UNLOADED,
   APPLY_TAG_FILTER,
 } from '../../constants/actionTypes';
 
-const Promise = global.Promise;
+const { Promise } = global;
 
 const mapStateToProps = (state) => ({
   tag: state.articleList.tag,
@@ -22,8 +22,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClickTag: (tag, pager, payload) => dispatch({ type: APPLY_TAG_FILTER, tag, pager, payload }),
-  onLoad: (tab, pager, payload) => dispatch({ type: HOME_PAGE_LOADED, tab, pager, payload }),
+  onClickTag: (tag, pager, payload) => dispatch({
+    type: APPLY_TAG_FILTER, tag, pager, payload,
+  }),
+  onLoad: (tab, pager, payload) => dispatch({
+    type: HOME_PAGE_LOADED, tab, pager, payload,
+  }),
   onUnload: () => dispatch({ type: HOME_PAGE_UNLOADED }),
 });
 
@@ -66,7 +70,7 @@ const Home = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Banner token={props.token} appName={props.appName} />
       <Section>
         <Container>
@@ -78,7 +82,7 @@ const Home = (props) => {
           </Sidebar>
         </Container>
       </Section>
-    </React.Fragment>
+    </>
   );
 };
 

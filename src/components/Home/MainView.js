@@ -1,13 +1,13 @@
-import ArticleList from '../ArticleList';
 import React from 'react';
 import styled, { css } from 'styled-components';
-import agent from '../../agent';
 import { connect } from 'react-redux';
+import agent from '../../agent';
+import ArticleList from '../ArticleList';
 import { CHANGE_TAB } from '../../constants/actionTypes';
 
 const TabsList = styled.ul`
   display: flex;
-  box-shadow: inset 0px -1px 0px #1f1f1f;
+  box-shadow: inset 0 -1px 0 #1f1f1f;
 `;
 
 const Tab = styled.a`
@@ -16,11 +16,10 @@ const Tab = styled.a`
   display: block;
   font-weight: bold;
 
-  ${(props) =>
-    props.active &&
-    css`
+  ${(props) => props.active
+    && css`
       color: var(--color-default);
-      box-shadow: inset 0px -2px 0px var(--color-accent);
+      box-shadow: inset 0 -2px 0 var(--color-accent);
     `}
 `;
 
@@ -33,7 +32,7 @@ const YourFeedTab = (props) => {
 
     return (
       <li>
-        <Tab href='' active={props.tab === 'feed'} onClick={clickHandler}>
+        <Tab href="" active={props.tab === 'feed'} onClick={clickHandler}>
           Ваша лента
         </Tab>
       </li>
@@ -49,7 +48,7 @@ const GlobalFeedTab = (props) => {
   };
   return (
     <li>
-      <Tab href='' active={props.tab === 'all'} onClick={clickHandler}>
+      <Tab href="" active={props.tab === 'all'} onClick={clickHandler}>
         Лента
       </Tab>
     </li>
@@ -63,8 +62,9 @@ const TagFilterTab = (props) => {
 
   return (
     <li>
-      <Tab href='' active>
-        #{props.tag}
+      <Tab href="" active>
+        #
+        {props.tag}
       </Tab>
     </li>
   );
@@ -77,27 +77,27 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload }),
+  onTabClick: (tab, pager, payload) => dispatch({
+    type: CHANGE_TAB, tab, pager, payload,
+  }),
 });
 
-const MainView = (props) => {
-  return (
-    <React.Fragment>
-      <TabsList>
-        <YourFeedTab tab={props.tab} onTabClick={props.onTabClick} token={props.token} />
-        <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
-        <TagFilterTab tag={props.tag} />
-      </TabsList>
+const MainView = (props) => (
+  <>
+    <TabsList>
+      <YourFeedTab tab={props.tab} onTabClick={props.onTabClick} token={props.token} />
+      <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
+      <TagFilterTab tag={props.tag} />
+    </TabsList>
 
-      <ArticleList
-        pager={props.pager}
-        articles={props.articles}
-        loading={props.loading}
-        articlesCount={props.articlesCount}
-        currentPage={props.currentPage}
-      />
-    </React.Fragment>
-  );
-};
+    <ArticleList
+      pager={props.pager}
+      articles={props.articles}
+      loading={props.loading}
+      articlesCount={props.articlesCount}
+      currentPage={props.currentPage}
+    />
+  </>
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainView);

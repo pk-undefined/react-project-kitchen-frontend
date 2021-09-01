@@ -28,7 +28,6 @@ export const fontFaces = css`
     font-family: 'Press Start 2P';
     font-style: normal;
     font-weight: 400;
-    src: url('${PressStart2pRegularWoff}') format('woff'),
-      url('${PressStart2pRegularWoff2}') format('woff2');
+    src: url('${PressStart2pRegularWoff}') format('woff'), url('${PressStart2pRegularWoff2}') format('woff2');
   }
 `;

@@ -1,15 +1,15 @@
-import ArticleActions from "./ArticleActions";
-import React from "react";
-import styled from "styled-components";
-import UserInfo from "../UserInfo";
-import Like from "../Like";
+import React from 'react';
+import styled from 'styled-components';
+import ArticleActions from './ArticleActions';
+import UserInfo from '../UserInfo';
+import Like from '../Like';
 
 const ArticleMeta = (props) => {
-  const article = props.article;
+  const { article } = props;
 
   return (
     <StyledArticleMeta>
-      <UserInfo article={article}/>
+      <UserInfo article={article} />
       {!props.canModify && <Like article={article} />}
       <ArticleActions canModify={props.canModify} article={article} />
     </StyledArticleMeta>

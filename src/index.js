@@ -1,30 +1,29 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import React from 'react';
-import { store, history } from './store';
 
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 
+import { createGlobalStyle } from 'styled-components';
 import App from './components/App';
 
-import { createGlobalStyle } from 'styled-components';
+import { store, history } from './store';
 
 import { fontFaces } from './fonts/fonts';
 
 const Global = createGlobalStyle`
 
-${fontFaces}
+${fontFaces};
 
 :root {
-  --bg-color-primary: #0A0A0A;
-  --bg-color-secondary: #1F1F1F;
-  --color-default: #EBEBEB;
-  --color-inactive: #B8B8B8;
-  --color-accent: #FF0000;
-  --font-family-default: 'Consolas';
+  --bg-color-primary: #0a0a0a;
+  --bg-color-secondary: #1f1f1f;
+  --color-default: #ebebeb;
+  --color-inactive: #b8b8b8;
+  --color-accent: #f00;
+  --font-family-default: 'Consolas', 'Arial', sans-serif;
   --font-family-title: 'Press Start 2P';
-
 }
 
 body {
@@ -56,10 +55,12 @@ h2 {
   line-height: 40px;
 }
 
-a, a:focus, a:hover {
-    color:  var(--color-default);
+a,
+a:focus,
+a:hover { 
+    color: var(--color-default);
     text-decoration: none;
-}
+} 
 
 li {
   list-style-type: none;
@@ -72,16 +73,16 @@ ul {
 `;
 
 ReactDOM.render(
-  <React.Fragment>
+  <>
     <Global />
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path='/' component={App} />
+          <Route path="/" component={App} />
         </Switch>
       </ConnectedRouter>
     </Provider>
-  </React.Fragment>,
+  </>,
 
-  document.getElementById('root')
+  document.getElementById('root'),
 );

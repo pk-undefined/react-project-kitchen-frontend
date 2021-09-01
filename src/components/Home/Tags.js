@@ -5,7 +5,7 @@ import agent from '../../agent';
 const TagsTitle = styled.h3`
   font-size: 16px;
   line-height: 24px;
-  font-family: Consolas;
+  font-family: Consolas, Arial, sans-serif;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 16px;
@@ -28,32 +28,30 @@ const Tag = styled.a`
 
 const tags = ['Tag', 'tag', 'TAG', 'React', 'css', 'Redux'];
 
-const Tags = ({ activeTag, onClickTag }) => {
-  return (
-    <React.Fragment>
-      <TagsTitle>Популярные теги</TagsTitle>
-      <TagsList>
-        {tags
-          ? tags.map((tag) => {
-              const handleClick = (ev) => {
-                ev.preventDefault();
-                onClickTag(
-                  tag,
-                  (page) => agent.Articles.byTag(tag, page),
-                  agent.Articles.byTag(tag)
-                );
-              };
+const Tags = ({ activeTag, onClickTag }) => (
+  <>
+    <TagsTitle>Популярные теги</TagsTitle>
+    <TagsList>
+      {tags
+        ? tags.map((tag) => {
+          const handleClick = (ev) => {
+            ev.preventDefault();
+            onClickTag(
+              tag,
+              (page) => agent.Articles.byTag(tag, page),
+              agent.Articles.byTag(tag),
+            );
+          };
 
-              return (
-                <Tag href='' active={tag === activeTag} key={tag} onClick={handleClick}>
-                  {tag}
-                </Tag>
-              );
-            })
-          : 'Loading Tags...'}
-      </TagsList>
-    </React.Fragment>
-  );
-};
+          return (
+            <Tag href="" active={tag === activeTag} key={tag} onClick={handleClick}>
+              {tag}
+            </Tag>
+          );
+        })
+        : 'Loading Tags...'}
+    </TagsList>
+  </>
+);
 
 export default Tags;

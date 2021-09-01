@@ -15,21 +15,18 @@ const StyledButton = styled.button`
   border-color: var(--color-default);
   color: var(--color-default);
 
-  .btnIcon {
+  .btnIcon { 
     margin-right: 8px;
   }
 
-  ${(props) =>
-    props.outlined &&
-    css`
+  ${(props) => props.outlined
+    && css`
       color: var(--color-accent);
       border-color: var(--color-accent);
       background: transparent;
     `}
 `;
 
-const Button = (props) => {
-  return <StyledButton {...props} />;
-};
+const Button = (props) => <StyledButton {...props} />;
 
 export default Button;

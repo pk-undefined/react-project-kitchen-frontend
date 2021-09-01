@@ -4,7 +4,9 @@ import styled from 'styled-components';
 
 import icons from './UI/icons/icons';
 
-const { HomeIcon, SettingsIcon, EditIcon, Avatar, LogInIcon } = icons;
+const {
+  HomeIcon, SettingsIcon, EditIcon, Avatar, LogInIcon,
+} = icons;
 
 const StyledHeader = styled.header`
   display: flex;
@@ -56,60 +58,62 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const NavLink = (props) => {
-  return (
-    <li>
-      <StyledLink {...props}>{props.children}</StyledLink>
-    </li>
-  );
-};
+const NavLink = (props) => (
+  <li>
+    <StyledLink {...props}>{props.children}</StyledLink>
+  </li>
+);
 
-const LoggedOutView = (props) => {
-  return (
-    <React.Fragment>
-      <NavLink to='/login'>
-        <LogInIcon className='navIcon' /> Войти
-      </NavLink>
-    </React.Fragment>
-  );
-};
+const LoggedOutView = () => (
+  <>
+    <NavLink to="/login">
+      <LogInIcon className="navIcon" />
+      {' '}
+      Войти
+    </NavLink>
+  </>
+);
 
-const LoggedInView = (props) => {
-  return (
-    <React.Fragment>
-      <NavLink to='/editor'>
-        <EditIcon className='navIcon' /> Новая запись
-      </NavLink>
+const LoggedInView = (props) => (
+  <>
+    <NavLink to="/editor">
+      <EditIcon className="navIcon" />
+      {' '}
+      Новая запись
+    </NavLink>
 
-      <NavLink to='/settings'>
-        <SettingsIcon className='navIcon' /> Настройки
-      </NavLink>
+    <NavLink to="/settings">
+      <SettingsIcon className="navIcon" />
+      {' '}
+      Настройки
+    </NavLink>
 
-      <NavLink to={`/@${props.currentUser.username}`}>
-        <Avatar className='avatar' /> {props.currentUser.username}
-      </NavLink>
-    </React.Fragment>
-  );
-};
+    <NavLink to={`/@${props.currentUser.username}`}>
+      <Avatar className="avatar" />
+      {' '}
+      {props.currentUser.username}
+    </NavLink>
+  </>
+);
 
-const Header = (props) => {
-  return (
-    <StyledHeader>
-      <StyledContainer>
-        <StyledLogo to='/'>Проектная кухня</StyledLogo>
-        <StyledNav>
-          <NavLink to='/' active>
-            <HomeIcon className='navIcon' /> Главная
-          </NavLink>
-          {props.currentUser ? (
-            <LoggedInView currentUser={props.currentUser} />
-          ) : (
-            <LoggedOutView currentUser={props.currentUser} />
-          )}
-        </StyledNav>
-      </StyledContainer>
-    </StyledHeader>
-  );
-};
+const Header = (props) => (
+  <StyledHeader>
+    <StyledContainer>
+      <StyledLogo to="/">Проектная кухня</StyledLogo>
+      <StyledNav>
+        <NavLink to="/" active>
+          <HomeIcon className="navIcon" />
+          {' '}
+          Главная
+        </NavLink>
+        {props.currentUser ? (
+          <LoggedInView currentUser={props.currentUser} />
+        ) : (
+          <LoggedOutView currentUser={props.currentUser} />
+        )}
+      </StyledNav>
+    </StyledContainer>
+  </StyledHeader>
+);
 
 export default Header;
