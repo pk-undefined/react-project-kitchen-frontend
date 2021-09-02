@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import ArticleMeta from './ArticleMeta';
+// import ArticleMeta from './ArticleMeta';
 import CommentContainer from './CommentContainer';
 import agent from '../../agent';
 import { ARTICLE_PAGE_LOADED, ARTICLE_PAGE_UNLOADED } from '../../constants/actionTypes';
+import Post from './Post';
 
 const mapStateToProps = (state) => ({
   ...state.article,
@@ -21,12 +22,15 @@ const Article = (props) => {
   } = props;
 
   const {
-    body, author = {}, title, tagList = [],
+    body,
+    // author = {},
+    title,
+    tagList = [],
   } = article;
 
   const { id: matchId } = match.params;
-  const currentUserUsername = currentUser?.username;
-  const authorUsername = author?.username;
+  // const currentUserUsername = currentUser?.username;
+  // const authorUsername = author?.username;
   const { Articles, Comments } = agent;
 
   useEffect(() => {
@@ -38,9 +42,8 @@ const Article = (props) => {
     return () => onUnload();
   }, []);
 
-  // body
-  const canModify = currentUser
-    && currentUserUsername === authorUsername;
+  // const canModify = currentUser
+  //   && currentUserUsername === authorUsername;
 
   return article && (
     <div className="article-page">
@@ -48,11 +51,10 @@ const Article = (props) => {
       <div className="banner">
         <div className="container">
 
-          <h1>{title}</h1>
-          <ArticleMeta
-            article={article}
-            canModify={canModify}
-          />
+          {/* <ArticleMeta */}
+          {/*  article={article} */}
+          {/*  canModify={canModify} */}
+          {/* /> */}
 
         </div>
       </div>
@@ -62,7 +64,7 @@ const Article = (props) => {
         <div className="row article-content">
           <div className="col-xs-12">
 
-            <p>{body}</p>
+            <Post body={body} title={title} />
 
             <ul className="tag-list">
               {
