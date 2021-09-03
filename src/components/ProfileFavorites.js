@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import agent from '../agent';
-import { Profile, mapStateToProps } from './Profile';
+import Profile from './Profile';
 import {
   PROFILE_PAGE_LOADED,
   PROFILE_PAGE_UNLOADED,
@@ -12,7 +12,11 @@ const mapDispatchToProps = (dispatch) => ({
   onLoad: (pager, payload) => dispatch({ type: PROFILE_PAGE_LOADED, pager, payload }),
   onUnload: () => dispatch({ type: PROFILE_PAGE_UNLOADED }),
 });
-
+const mapStateToProps = (state) => ({
+  ...state.articleList,
+  currentUser: state.common.currentUser,
+  profile: state.profile,
+});
 class ProfileFavorites extends Profile {
   componentWillMount() {
     this.props.onLoad((page) => agent.Articles.favoritedBy(this.props.match.params.username, page),
