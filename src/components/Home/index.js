@@ -1,59 +1,89 @@
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 import Banner from './Banner';
 import MainView from './MainView';
-import React from 'react';
 import Tags from './Tags';
+
 import agent from '../../agent';
-import { connect } from 'react-redux';
 import {
   HOME_PAGE_LOADED,
   HOME_PAGE_UNLOADED,
   APPLY_TAG_FILTER,
 } from '../../constants/actionTypes';
 
-const Promise = global.Promise;
+const { Promise } = global;
 
 const mapStateToProps = (state) => ({
-  ...state.home,
+  tag: state.articleList.tag,
+  tags: state.home.tags,
   appName: state.common.appName,
   token: state.common.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClickTag: (tag, pager, payload) => dispatch({ type: APPLY_TAG_FILTER, tag, pager, payload }),
-  onLoad: (tab, pager, payload) => dispatch({ type: HOME_PAGE_LOADED, tab, pager, payload }),
+  onClickTag: (tag, pager, payload) => dispatch({
+    type: APPLY_TAG_FILTER, tag, pager, payload,
+  }),
+  onLoad: (tab, pager, payload) => dispatch({
+    type: HOME_PAGE_LOADED, tab, pager, payload,
+  }),
   onUnload: () => dispatch({ type: HOME_PAGE_UNLOADED }),
 });
 
-class Home extends React.Component {
-  componentWillMount() {
-    const tab = this.props.token ? 'feed' : 'all';
-    const articlesPromise = this.props.token ? agent.Articles.feed : agent.Articles.all;
+const Section = styled.section`
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
+`;
 
-    this.props.onLoad(tab, articlesPromise, Promise.all([agent.Tags.getAll(), articlesPromise()]));
-  }
+const Container = styled.div`
+  display: flex;
+  max-width: 1140px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
+const Main = styled.main`
+  width: 75%;
+  margin: 0 16px;
+`;
 
-  render() {
-    return (
-      <div className='home-page'>
-        <Banner token={this.props.token} appName={this.props.appName} />
-        <div className='container page'>
-          <div className='row'>
+const Sidebar = styled.div`
+  background-color: var(--bg-color-secondary);
+  width: 25%;
+  margin: 0 16px;
+  padding: 16px;
+  font-weight: bold;
+`;
+
+const Home = (props) => {
+  React.useEffect(() => {
+    const tab = props.token ? 'feed' : 'all';
+    const articlesPromise = props.token ? agent.Articles.feed : agent.Articles.all;
+    props.onLoad(tab, articlesPromise, Promise.all([agent.Tags.getAll(), articlesPromise()]));
+
+    return () => {
+      props.onUnload();
+    };
+  }, []);
+
+  return (
+    <>
+      <Banner token={props.token} appName={props.appName} />
+      <Section>
+        <Container>
+          <Main>
             <MainView />
-            <div className='col-md-3'>
-              <div className='sidebar'>
-                <p>Popular Tags</p>
-                <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+          </Main>
+          <Sidebar>
+            <Tags activeTag={props.tag} tags={props.tags} onClickTag={props.onClickTag} />
+          </Sidebar>
+        </Container>
+      </Section>
+    </>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

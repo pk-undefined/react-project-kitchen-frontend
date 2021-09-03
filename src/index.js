@@ -1,37 +1,29 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import React from 'react';
-import { store, history } from './store';
 
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 
+import { createGlobalStyle } from 'styled-components';
 import App from './components/App';
 
-import { createGlobalStyle } from 'styled-components';
+import { store, history } from './store';
 
-import ConsolasWoff from './fonts/Consolas.woff';
-import ConsolasWoff2 from './fonts/Consolas.woff2';
-import PressStart2pRegularWoff from './fonts/press-start-2p-v9-latin_cyrillic-regular.woff';
-import PressStart2pRegularWoff2 from './fonts/press-start-2p-v9-latin_cyrillic-regular.woff2';
+import { fontFaces } from './fonts/fonts';
 
 const Global = createGlobalStyle`
-@font-face {
-  font-family: 'Consolas';
-  font-weight: normal;
-  font-style: normal;
-  src:
-    url('${ConsolasWoff}') format('woff'),
-    url('${ConsolasWoff2}') format('woff2');
-}
 
-@font-face {
-  font-family: 'Press Start 2P';
-  font-style: normal;
-  font-weight: 400;
-  src:
-    url('${PressStart2pRegularWoff}') format('woff'),
-    url('${PressStart2pRegularWoff2}') format('woff2');
+${fontFaces};
+
+:root {
+  --bg-color-primary: #0a0a0a;
+  --bg-color-secondary: #1f1f1f;
+  --color-default: #ebebeb;
+  --color-inactive: #b8b8b8;
+  --color-accent: #f00;
+  --font-family-default: 'Consolas', 'Arial', sans-serif;
+  --font-family-title: 'Press Start 2P';
 }
 
 body {
@@ -41,8 +33,8 @@ body {
   line-height: 24px;
   font-family: Consolas;
   font-style: normal;
-  color: #EBEBEB;
-  // background: #0A0A0A;
+  color: var(--color-default);
+  background-color: var(--bg-color-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -62,19 +54,35 @@ h2 {
   font-size: 24px;
   line-height: 40px;
 }
+
+a,
+a:focus,
+a:hover { 
+    color: var(--color-default);
+    text-decoration: none;
+} 
+
+li {
+  list-style-type: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
 `;
 
 ReactDOM.render(
-  <React.Fragment>
+  <>
     <Global />
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path='/' component={App} />
+          <Route path="/" component={App} />
         </Switch>
       </ConnectedRouter>
     </Provider>
-  </React.Fragment>,
+  </>,
 
-  document.getElementById('root')
+  document.getElementById('root'),
 );

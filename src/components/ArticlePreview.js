@@ -1,38 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import ArticleMeta from "./Article/ArticleMeta";
-import defaultAvatar from "../images/default-avatar.svg";
-
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import ArticleMeta from './Article/ArticleMeta';
+import defaultAvatar from '../images/default-avatar.svg';
 
 const ArticlePreview = (props) => {
-  const article = props.article;
+  const { article } = props;
 
-  //пока не работает добавление тэгов
+  // пока не работает добавление тэгов
   const list = [
-    "Tag1",
-    "tag2",
-    "tag3",
-    "tag4",
-    "tag5",
-    "tag6",
-    "tag7",
-    "tag8",
-    "tag9",
+    'Tag1',
+    'tag2',
+    'tag3',
+    'tag4',
+    'tag5',
+    'tag6',
+    'tag7',
+    'tag8',
+    'tag9',
   ];
 
   return (
     <StyledArticlePreview>
-      <ArticleImage src={article.image ? article.image : defaultAvatar} alt={article.title}/>
+      <ArticleImage src={article.image ? article.image : defaultAvatar} alt={article.title} />
       <ArticleMeta article={article} canModify={false} />
       <ArticleLink to={`/article/${article.slug}`}>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleText>{article.description}</ArticleText>
         <Text>Read more</Text>
         <TagList>
-          {list.map((tag, index) => {
-            return <Tag key={tag + index}>{tag}</Tag>;
-          })}
+          {list.map((tag, index) => <Tag key={tag + index}>{tag}</Tag>)}
         </TagList>
       </ArticleLink>
     </StyledArticlePreview>
@@ -48,8 +45,8 @@ const StyledArticlePreview = styled.article`
   padding: 32px 0;
   display: grid;
   grid-template-columns: 160px 1fr;
-  column-gap: 16px;
-  box-shadow: inset 0px -1px 0px #1F1F1F;
+  column-gap: 16px; 
+  box-shadow: inset 0 -1px 0 #1f1f1f;
 `;
 
 const ArticleImage = styled.img`
@@ -82,7 +79,7 @@ const Text = styled.p`
   line-height: 1.5;
   margin: 0;
   padding: 0;
-  color: #ff0000;
+  color: #f00; 
   text-decoration: underline;
   grid-column: 1;
 `;
