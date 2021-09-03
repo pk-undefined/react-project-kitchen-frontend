@@ -5,13 +5,13 @@ import UserInfo from '../UserInfo';
 import Like from '../Like';
 
 const ArticleMeta = (props) => {
-  const { article } = props;
+  const { article, canModify } = props;
 
   return (
     <StyledArticleMeta>
       <UserInfo article={article} />
-      {!props.canModify && <Like article={article} />}
-      <ArticleActions canModify={props.canModify} article={article} />
+      {!canModify && <Like article={article} />}
+      <ArticleActions canModify={canModify} article={article} />
     </StyledArticleMeta>
   );
 };
