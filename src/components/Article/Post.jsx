@@ -10,13 +10,12 @@ const bodyLorem = `
 
 const descLorem = 'Описание нормальной статьи про жизнь молодую';
 
-const Post = (props) => {
+const ArticleInner = (props) => {
   // необходимые пропсы articleTitle, body, articleDescription, articleImg
-  const { body, title } = props;
-  console.log(body, title);
+  const { body, title, className } = props;
 
   return (
-    <StyledPost className="Post">
+    <article className={className}>
       {/* заголовок сюда, tagList */}
       <h1 className="Post__header">{title}</h1>
       <p className="Post__description">
@@ -32,18 +31,18 @@ const Post = (props) => {
       {
         // распаршиваем боди на параграфы моднейшие
         bodyLorem.split(/\n/)
-          .map((paragraph, index) => <p className="Post__paragraph" key={index}>{paragraph}</p>)
+          .map((paragraph, index) => <p className="Post__paragraph" key={index}>{body}</p>)
       }
-    </StyledPost>
+    </article>
   );
 };
 
-const StyledPost = styled.article`
+const Post = styled(ArticleInner)`
   max-width: 1108px;
   margin: auto;
 
-  .Post_header {
-    font-size: 24px;
+  .Post__header {
+    font-size: 14px;
     line-height: 40px;
     color: #ebebeb;
     font-style: normal;

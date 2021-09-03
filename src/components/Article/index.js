@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-// import ArticleMeta from './ArticleMeta';
+// import marked from 'marked';
+import ArticleMeta from './ArticleMeta';
 import CommentContainer from './CommentContainer';
 import agent from '../../agent';
 import { ARTICLE_PAGE_LOADED, ARTICLE_PAGE_UNLOADED } from '../../constants/actionTypes';
@@ -16,87 +17,78 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: ARTICLE_PAGE_UNLOADED }),
 });
 
-const Article = (props) => {
-  const {
-    onLoad, onUnload, match, article = {}, currentUser = {}, comments = [], commentErrors,
-  } = props;
-
-  const {
-    body,
-    // author = {},
-    title,
-    tagList = [],
-  } = article;
-
-  const { id: matchId } = match.params;
-  // const currentUserUsername = currentUser?.username;
-  // const authorUsername = author?.username;
-  const { Articles, Comments } = agent;
-
-  useEffect(() => {
-    onLoad(Promise.all([
-      Articles.get(matchId),
-      Comments.forArticle(matchId),
+class Article extends React.Component {
+  componentWillMount() {
+    this.props.onLoad(Promise.all([
+      agent.Articles.get(this.props.match.params.id),
+      agent.Comments.forArticle(this.props.match.params.id),
     ]));
+  }
 
-    return () => onUnload();
-  }, []);
+  componentWillUnmount() {
+    this.props.onUnload();
+  }
 
-  // const canModify = currentUser
-  //   && currentUserUsername === authorUsername;
+  render() {
+    if (!this.props.article) {
+      return null;
+    }
 
-  return article && (
-    <div className="article-page">
+    const canModify = this.props.currentUser
+      && this.props.currentUser.username === this.props.article.author.username;
+    return (
+      <div className="article-page">
 
-      <div className="banner">
-        <div className="container">
+        <div className="banner">
+          <div className="container">
 
-          {/* <ArticleMeta */}
-          {/*  article={article} */}
-          {/*  canModify={canModify} */}
-          {/* /> */}
-
-        </div>
-      </div>
-
-      <div className="container page">
-
-        <div className="row article-content">
-          <div className="col-xs-12">
-
-            <Post body={body} title={title} />
-
-            <ul className="tag-list">
-              {
-                tagList?.map((tag) => (
-                  <li
-                    className="tag-default tag-pill tag-outline"
-                    key={tag}
-                  >
-                    {tag}
-                  </li>
-                ))
-              }
-            </ul>
+            <ArticleMeta
+              article={this.props.article}
+              canModify={canModify}
+            />
 
           </div>
         </div>
 
-        <hr />
+        <div className="container page">
 
-        <div className="article-actions" />
+          <div className="row article-content">
+            <div className="col-xs-12">
 
-        <div className="row">
-          <CommentContainer
-            comments={comments}
-            errors={commentErrors}
-            slug={matchId}
-            currentUser={currentUser}
-          />
+              <Post body={this.props.article.body} title={this.props.article.title} />
+
+              <ul className="tag-list">
+                {
+                  this.props.article.tagList.map((tag) => (
+                    <li
+                      className="tag-default tag-pill tag-outline"
+                      key={tag}
+                    >
+                      {tag}
+                    </li>
+                  ))
+                }
+              </ul>
+
+            </div>
+          </div>
+
+          <hr />
+
+          <div className="article-actions" />
+
+          <div className="row">
+            <CommentContainer
+              comments={this.props.comments || []}
+              errors={this.props.commentErrors}
+              slug={this.props.match.params.id}
+              currentUser={this.props.currentUser}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Article);
