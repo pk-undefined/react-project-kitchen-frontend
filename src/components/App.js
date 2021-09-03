@@ -9,7 +9,7 @@ import Article from './Article';
 import Editor from './Editor';
 import Home from './Home';
 import Login from './Login';
-import Profile from './Profile';
+import { Profile } from './Profile';
 import ProfileFavorites from './ProfileFavorites';
 import Register from './Register';
 import Settings from './Settings';

@@ -24,7 +24,7 @@ const ArticleInner = (props) => {
       {
         // распаршиваем боди на параграфы моднейшие
         body.split(/\n/)
-          .map((paragraph, index) => <p className="Post__paragraph" key={index}>{body}</p>)
+          .map((paragraph, index) => <p className="Post__paragraph" key={index}>{paragraph}</p>)
       }
     </article>
   );
@@ -39,7 +39,7 @@ const Post = styled(ArticleInner)`
     line-height: 40px;
     color: #ebebeb;
     font-style: normal;
-    margin-bottom: 16px;
+    margin: 16px 0;
   }
 
   .Post__description {

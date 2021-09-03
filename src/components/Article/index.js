@@ -73,8 +73,6 @@ class Article extends React.Component {
             </div>
           </div>
 
-          <hr />
-
           <div className="article-actions" />
 
           <div className="row">

@@ -1,4 +1,4 @@
-import React, { useEffect, Suspence } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import ArticleMeta from './ArticleMeta';
 import CommentContainer from './CommentContainer';
