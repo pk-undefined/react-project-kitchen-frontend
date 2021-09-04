@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import eye from '../../images/eye.svg';
 import eyeOff from '../../images/eye-off.svg';
 import errorImg from '../../images/error-input.svg';
+import stapleImg from '../../images/staple.svg';
 
 const InputComponent = (props) => {
   const [passwordHidden, setPasswordHidden] = useState(true);
   // const [error, setError] = useState(false);
   const error = false;
-
   if (props.passwordField) {
     return (
       <span>
@@ -20,7 +20,7 @@ const InputComponent = (props) => {
           error={error}
         />
         {!error && (
-          <EyeImage
+          <Icon
             src={passwordHidden ? eye : eyeOff}
             alt="Показать/скрыть"
             onClick={() => setPasswordHidden(!passwordHidden)}
@@ -55,6 +55,14 @@ const InputComponent = (props) => {
           width="24"
         />
       )}
+      {props.includesLoader && (
+        <Icon
+          src={stapleImg}
+          alt="Загрузить"
+          onClick={() => console.log('TODO: добавить загрузку файла')}
+          width="24"
+        />
+      )}
     </span>
   );
 };
@@ -76,7 +84,7 @@ const Input = styled.input`
   margin-top: 4px;
   border: ${(props) => (props.error ? '1px solid red' : '')};
 `;
-const EyeImage = styled.img`
+const Icon = styled.img`
   position: absolute;
   top: 37px;
   right: 16px;

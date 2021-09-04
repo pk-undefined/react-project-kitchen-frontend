@@ -6,7 +6,6 @@ import agent from '../agent';
 import Header from './Header';
 import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import Article from './Article';
-import Editor from './Editor';
 import Home from './Home';
 import Login from './Form/Login';
 import Profile from './Profile';
@@ -14,6 +13,7 @@ import ProfileFavorites from './ProfileFavorites';
 import Register from './Form/Register';
 import { store } from '../store';
 import SettingsForm from './Form/SettingsForm';
+import NewPostForm from './Form/NewPostForm';
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -59,8 +59,8 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/editor/:slug" component={Editor} />
-            <Route path="/editor" component={Editor} />
+            <Route path="/editor/:slug" component={NewPostForm} />
+            <Route path="/editor" component={NewPostForm} />
             <Route path="/article/:id" component={Article} />
             <Route path="/settings" component={SettingsForm} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />

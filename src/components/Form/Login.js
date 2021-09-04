@@ -24,8 +24,8 @@ const Login = (props) => {
   return (
     <AuthForm title="Войти" linkText="Хотите создать аккаунт?" link="register" formType="LOGIN">
       <fieldset>
-        <Fieldset type="input" fieldName="E-mail" fieldValue={email} handleInputChange={changeEmail} errors={props.errors} />
-        <Fieldset type="input" fieldName="Пароль" fieldValue={password} handleInputChange={changePassword} errors={props.errors} passwordField />
+        <Fieldset type="email" fieldName="E-mail" fieldValue={email} placeholder="E-mail" handleInputChange={changeEmail} errors={props.errors} />
+        <Fieldset type="password" fieldName="Пароль" fieldValue={password} placeholder="Пароль" handleInputChange={changePassword} errors={props.errors} passwordField />
       </fieldset>
     </AuthForm>
   );

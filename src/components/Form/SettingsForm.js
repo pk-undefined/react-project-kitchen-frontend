@@ -64,37 +64,42 @@ const SettingsForm = (props) => {
         <Title>Ваши настройки</Title>
         <fieldset>
           <Fieldset
-            type="input"
+            type="url"
             fieldName="Изображение профиля"
             fieldValue={user.image}
+            placeholder="Изображение профиля"
             handleInputChange={updateState('image')}
             errors={props.errors}
           />
           <Fieldset
-            type="input"
+            type="text"
             fieldName="Имя пользователя"
             fieldValue={user.username}
+            placeholder="Имя пользователя"
             handleInputChange={updateState('username')}
             errors={props.errors}
           />
           <Fieldset
-            type="textarea"
+            isTextarea
             fieldName="Информация о вас"
+            placeholder="Информация о вас"
             fieldValue={user.bio}
             handleInputChange={updateState('bio')}
             errors={props.errors}
           />
           <Fieldset
-            type="input"
+            type="email"
             fieldName="E-mail"
             fieldValue={user.email}
+            placeholder="E-mail"
             handleInputChange={updateState('email')}
             errors={props.errors}
           />
           <Fieldset
-            type="input"
+            type="password"
             fieldName="Новый пароль"
             fieldValue={user.password}
+            placeholder="Новый пароль"
             handleInputChange={updateState('password')}
             errors={props.errors}
             passwordField

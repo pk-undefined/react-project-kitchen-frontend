@@ -17,7 +17,8 @@ export default (state = {}, action) => {
         title: action.payload ? action.payload.article.title : '',
         description: action.payload ? action.payload.article.description : '',
         body: action.payload ? action.payload.article.body : '',
-        tagInput: '',
+        // fix
+        tagInput: action.payload ? action.payload.tag : '',
         tagList: action.payload ? action.payload.article.tagList : [],
       };
     case EDITOR_PAGE_UNLOADED:
