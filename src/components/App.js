@@ -12,8 +12,8 @@ import Login from './Form/Login';
 import Profile from './Profile';
 import ProfileFavorites from './ProfileFavorites';
 import Register from './Form/Register';
-import Settings from './Settings';
 import { store } from '../store';
+import SettingsForm from './Form/SettingsForm';
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -62,7 +62,7 @@ class App extends React.Component {
             <Route path="/editor/:slug" component={Editor} />
             <Route path="/editor" component={Editor} />
             <Route path="/article/:id" component={Article} />
-            <Route path="/settings" component={Settings} />
+            <Route path="/settings" component={SettingsForm} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
           </Switch>

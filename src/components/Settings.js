@@ -7,7 +7,7 @@ import {
   SETTINGS_PAGE_UNLOADED,
   LOGOUT,
 } from '../constants/actionTypes';
-import SettingsForm from './SettingsForm';
+import SettingsForm from './Form/SettingsForm';
 
 const mapStateToProps = (state) => ({
   ...state.settings,

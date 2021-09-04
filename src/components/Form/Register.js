@@ -26,9 +26,9 @@ const Register = (props) => {
   return (
     <AuthForm title="Зарегистрироваться" linkText="Уже есть аккаунт?" link="login" formType="REGISTER">
       <fieldset>
-        <Fieldset fieldName="Имя пользователя" fieldValue={username} handleInputChange={changeUsername} errors={props.errors} />
-        <Fieldset fieldName="E-mail" fieldValue={email} handleInputChange={changeEmail} errors={props.errors} />
-        <Fieldset fieldName="Пароль" fieldValue={password} handleInputChange={changePassword} errors={props.errors} passwordField />
+        <Fieldset type="input" fieldName="Имя пользователя" fieldValue={username} handleInputChange={changeUsername} errors={props.errors} />
+        <Fieldset type="input" fieldName="E-mail" fieldValue={email} handleInputChange={changeEmail} errors={props.errors} />
+        <Fieldset type="input" fieldName="Пароль" fieldValue={password} handleInputChange={changePassword} errors={props.errors} passwordField />
       </fieldset>
     </AuthForm>
   );
