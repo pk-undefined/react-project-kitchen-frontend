@@ -20,6 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: SETTINGS_PAGE_UNLOADED }),
 });
 
+// TODO: УДАЛИТЬ
 class Settings extends React.PureComponent {
   render() {
     return (

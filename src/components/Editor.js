@@ -25,6 +25,7 @@ const mapDispatchToProps = (dispatch) => ({
   onUpdateField: (key, value) => dispatch({ type: UPDATE_FIELD_EDITOR, key, value }),
 });
 
+// TODO: УДАЛИТЬ
 class Editor extends React.Component {
   constructor() {
     super();
