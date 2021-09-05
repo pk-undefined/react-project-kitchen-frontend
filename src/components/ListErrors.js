@@ -20,10 +20,10 @@ const ListErrors = ({ errors }) => {
     return (
       <List>
         {
-          Object.keys(errors).map((key) => (
-            <li key={key}>
+          Object.keys(errors).map((key, index) => (
+            <li key={key + index}>
               {key}
-              {errors[key]}
+              {errors[key].toString()}
             </li>
           ))
         }
