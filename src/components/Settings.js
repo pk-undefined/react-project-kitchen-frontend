@@ -7,7 +7,7 @@ import {
   SETTINGS_PAGE_UNLOADED,
   LOGOUT,
 } from '../constants/actionTypes';
-import SettingsForm from './SettingsForm';
+import SettingsForm from './Form/SettingsForm';
 
 const mapStateToProps = (state) => ({
   ...state.settings,
@@ -20,6 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: SETTINGS_PAGE_UNLOADED }),
 });
 
+// TODO: УДАЛИТЬ
 class Settings extends React.PureComponent {
   render() {
     return (
