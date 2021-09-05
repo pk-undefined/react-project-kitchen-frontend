@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-// import marked from 'marked';
 import ArticleMeta from './ArticleMeta';
 import CommentContainer from './CommentContainer';
 import agent from '../../agent';
 import { ARTICLE_PAGE_LOADED, ARTICLE_PAGE_UNLOADED } from '../../constants/actionTypes';
 import Post from './Post';
+import { ARTICLE_POLYFILL, COMMENTS_POLYFILL } from '../../constants/consts';
 
 const mapStateToProps = (state) => ({
   ...state.article,
@@ -17,76 +17,97 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: ARTICLE_PAGE_UNLOADED }),
 });
 
-class Article extends React.Component {
-  componentWillMount() {
-    this.props.onLoad(Promise.all([
-      agent.Articles.get(this.props.match.params.id),
-      agent.Comments.forArticle(this.props.match.params.id),
-    ]));
-  }
+const Article = (props) => {
+  const {
+    onLoad, onUnload, match,
+    article = ARTICLE_POLYFILL, currentUser = {},
+    comments = COMMENTS_POLYFILL, commentErrors,
+  } = props;
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
+  const {
+    body,
+    author = {},
+    title,
+    tagList = [],
+  } = article;
 
-  render() {
-    if (!this.props.article) {
-      return null;
+  const { id: matchId } = match.params;
+  const currentUserUsername = currentUser?.username;
+  const authorUsername = author?.username;
+  const { Articles, Comments } = agent;
+
+  const getArticleAndComments = async () => {
+    try {
+      return await Promise.all([
+        Articles.get(matchId),
+        Comments.forArticle(matchId),
+      ]);
+    } catch (e) {
+      throw new Error(`ошибка из кэтча:${e}`);
     }
+  };
 
-    const canModify = this.props.currentUser
-      && this.props.currentUser.username === this.props.article.author.username;
-    return (
-      <div className="article-page">
+  useEffect(() => {
+    onLoad(getArticleAndComments());
 
-        <div className="banner">
-          <div className="container">
+    return () => onUnload();
+  }, []);
 
-            <ArticleMeta
-              article={this.props.article}
-              canModify={canModify}
-            />
+  const canModify = currentUser
+    && currentUserUsername === authorUsername;
 
-          </div>
-        </div>
+  return article && (
+    <div className="article-page">
 
-        <div className="container page">
+      <div className="banner">
+        <div className="container">
 
-          <div className="row article-content">
-            <div className="col-xs-12">
+          <ArticleMeta
+            article={article}
+            canModify={canModify}
+          />
 
-              <Post body={this.props.article.body} title={this.props.article.title} />
-
-              <ul className="tag-list">
-                {
-                  this.props.article.tagList.map((tag) => (
-                    <li
-                      className="tag-default tag-pill tag-outline"
-                      key={tag}
-                    >
-                      {tag}
-                    </li>
-                  ))
-                }
-              </ul>
-
-            </div>
-          </div>
-
-          <div className="article-actions" />
-
-          <div className="row">
-            <CommentContainer
-              comments={this.props.comments || []}
-              errors={this.props.commentErrors}
-              slug={this.props.match.params.id}
-              currentUser={this.props.currentUser}
-            />
-          </div>
         </div>
       </div>
-    );
-  }
-}
+
+      <div className="container page">
+
+        <div className="row article-content">
+          <div className="col-xs-12">
+
+            <Post body={body} title={title} />
+
+            <ul className="tag-list">
+              {
+                tagList?.map((tag) => (
+                  <li
+                    className="tag-default tag-pill tag-outline"
+                    key={tag}
+                  >
+                    {tag}
+                  </li>
+                ))
+              }
+            </ul>
+
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="article-actions" />
+
+        <div className="row">
+          <CommentContainer
+            comments={comments}
+            errors={commentErrors}
+            slug={matchId}
+            currentUser={currentUser}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Article);
