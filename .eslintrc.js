@@ -27,6 +27,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/no-deprecated': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
+    'import/no-named-as-default': 'off',
   },
   ignorePatterns: ['node_modules'],
 };
