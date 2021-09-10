@@ -1,8 +1,8 @@
-import { HomeIcon } from './HomeIcon';
-import SettingsIcon from './SettingsIcon';
-import EditIcon from './EditIcon';
-import Avatar from './Avatar';
-import LogInIcon from './LogInIcon';
+import { HomeIcon } from './home-icon';
+import SettingsIcon from './settings-icon';
+import EditIcon from './edit-icon';
+import Avatar from './avatar';
+import LogInIcon from './login-icon';
 
 export default {
   HomeIcon, SettingsIcon, EditIcon, Avatar, LogInIcon,
