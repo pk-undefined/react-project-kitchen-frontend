@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import Fieldset from '../UI/fieldset/Fieldset';
+import Fieldset from '../UI/fieldset/fieldset';
 import agent from '../../agent';
 import {
   ADD_TAG,

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import Fieldset from '../UI/fieldset/Fieldset';
+import Fieldset from '../UI/fieldset/fieldset';
 import AuthForm from './auth-form';
 import {
   UPDATE_FIELD_AUTH,
