@@ -1,7 +1,7 @@
 import React from 'react';
 import ArticleActions from '../article-actions/article-actions';
 import UserInfo from '../user-info/user-info';
-import Like from '../UI/like/Like';
+import Like from '../UI/like/like';
 import { StyledArticleMeta } from './styled-article-meta';
 
 const ArticleMeta = (props) => {

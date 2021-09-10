@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Fieldset from '../UI/fieldset/Fieldset';
+import Fieldset from '../UI/fieldset/fieldset';
 import ButtonComponent from '../UI/button/button';
 import agent from '../../agent';
 import {

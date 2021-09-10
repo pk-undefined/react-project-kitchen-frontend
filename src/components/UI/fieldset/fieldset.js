@@ -1,7 +1,7 @@
 import React from 'react';
 import ListErrors from '../../list-errors/list-errors';
-import InputComponent from '../input/Input';
-import Textarea from '../textarea/Textarea';
+import InputComponent from '../input/input';
+import Textarea from '../textarea/textarea';
 import { StyledFieldset } from './styled-fieldset';
 
 const Fieldset = (props) => {
