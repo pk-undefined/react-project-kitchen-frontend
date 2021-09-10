@@ -6,7 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 
 import { createGlobalStyle } from 'styled-components';
-import App from './components/App';
+import App from './components/app/App';
 
 import { store, history } from './store';
 
