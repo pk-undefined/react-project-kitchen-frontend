@@ -64,7 +64,8 @@ const localStorageMiddleware = (store) => (next) => (action) => {
     window.localStorage.setItem('jwt', '');
     agent.setToken(null);
   }
-
+  console.log('------------------');
+  console.log(action);
   next(action);
 };
 
