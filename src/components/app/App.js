@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { push } from 'react-router-redux';
 import agent from '../../agent';
 import Header from '../header/header';
 import { APP_LOAD, REDIRECT } from '../../constants/actionTypes';
@@ -11,7 +10,6 @@ import Login from '../forms/login-form';
 import Profile from '../profile/profile';
 import ProfileFavorites from '../profile-favorites/profile-favorites';
 import Register from '../forms/register';
-import { store } from '../../store';
 import SettingsForm from '../forms/settings-form';
 import NewPostForm from '../forms/new-post-form';
 
@@ -38,27 +36,6 @@ const App = (props) => {
 
     props.onLoad(token ? agent.Auth.current() : null, token);
   }, []);
-  // componentWillMount() {
-  //   const token = window.localStorage.getItem('jwt');
-  //   if (token) {
-  //     agent.setToken(token);
-  //   }
-
-  //   this.props.onLoad(token ? agent.Auth.current() : null, token);
-  // }
-  useEffect(() => {
-    if (props.redirectTo) {
-      store.dispatch(push(props.redirectTo));
-      props.onRedirect();
-    }
-  }, [props]);
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.redirectTo) {
-  //     // this.context.router.replace(nextProps.redirectTo);
-  //     store.dispatch(push(nextProps.redirectTo));
-  //     this.props.onRedirect();
-  //   }
-  // }
 
   if (props.appLoaded) {
     return (
@@ -90,9 +67,5 @@ const App = (props) => {
     </div>
   );
 };
-
-// App.contextTypes = {
-//   router: PropTypes.object.isRequired
-// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
