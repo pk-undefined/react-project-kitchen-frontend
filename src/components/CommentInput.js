@@ -7,7 +7,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmit: (payload) => dispatch({ type: ADD_COMMENT, payload }),
 });
 
-// TODO: удалить после стилизации комментариев
+// TODO: удалить
 class CommentInput extends React.Component {
   constructor() {
     super();
@@ -21,6 +21,7 @@ class CommentInput extends React.Component {
 
     this.createComment = (ev) => {
       ev.preventDefault();
+      console.log('comment input', this.state.body, this.props.slug);
       const payload = agent.Comments.create(this.props.slug,
         { body: this.state.body });
       this.setState({ body: '' });
@@ -43,6 +44,7 @@ class CommentInput extends React.Component {
         <div className="card-footer">
           <img
             src={this.props.currentUser.image}
+            style={{ maxWidth: 40, maxHeight: 40 }}
             className="comment-author-img"
             alt={this.props.currentUser.username}
           />

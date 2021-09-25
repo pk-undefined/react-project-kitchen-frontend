@@ -3,8 +3,8 @@ import {
   StyledUserInfo, UserAvatar, AuthorLink, PublicationDate,
 } from './styled-user-info';
 
-const UserInfo = ({ article }) => (
-  <StyledUserInfo>
+const UserInfo = ({ article, isNotFullWidth }) => (
+  <StyledUserInfo isNotFullWidth={isNotFullWidth}>
     <UserAvatar
       to={`/@${article.author.username}`}
       avatar={article.author.image}

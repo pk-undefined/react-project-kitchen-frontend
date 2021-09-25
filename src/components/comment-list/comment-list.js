@@ -1,8 +1,9 @@
 import React from 'react';
 import Comment from '../comment/comment';
+import { StyledCommentList } from './styled-comment-list';
 
 const CommentList = (props) => (
-  <div>
+  <StyledCommentList>
     {
         props.comments.map((comment) => (
           <Comment
@@ -13,7 +14,7 @@ const CommentList = (props) => (
           />
         ))
       }
-  </div>
+  </StyledCommentList>
 );
 
 export default CommentList;

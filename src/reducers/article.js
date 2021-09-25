@@ -21,7 +21,8 @@ export default (state = {}, action) => {
         commentErrors: action.error ? action.payload.errors : null,
         comments: action.error
           ? null
-          : (state.comments || []).concat([action.payload.comment]),
+          : [...state.comments, action.payload.comment],
+        // : (state.comments || []).concat([action.payload.comment]),
       };
     case DELETE_COMMENT:
       // eslint-disable-next-line no-case-declarations

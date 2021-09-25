@@ -62,3 +62,18 @@ export const StyledLink = styled(Link)`
     cursor: pointer;
   }
 `;
+
+export const StyledCommentForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  max-width:728px;
+  margin: 0 0 32px 0;
+  background: var(--bg-color-secondary);
+`;
+
+export const InfoContainer = styled.div`
+  padding: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;

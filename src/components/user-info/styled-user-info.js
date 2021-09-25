@@ -7,7 +7,7 @@ export const StyledUserInfo = styled.div`
   grid-template-rows: repeat(2, min-content);
   column-gap: 8px;
   align-items: center;
-  width: 100%;
+  width: ${(props) => (!props.isNotFullWidth && '100%')};
 `;
 
 export const UserAvatar = styled(Link)`
@@ -15,7 +15,7 @@ export const UserAvatar = styled(Link)`
   height: 40px;
   grid-column: 1;
   grid-row: 1/3;
-  background: center/cover url(${(props) => props.avatar}) no-repeat;
+  background: center/40px 40px url(${(props) => props.avatar}) no-repeat;
   transition: opacity 0.5s linear;
 
   &:hover {

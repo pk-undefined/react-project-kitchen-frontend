@@ -31,7 +31,7 @@ const ArticleInner = (props) => {
 };
 
 const Post = styled(ArticleInner)`
-  max-width: 1108px;
+  width: 1108px;
   margin: auto;
 
   .Post__header {
@@ -39,7 +39,7 @@ const Post = styled(ArticleInner)`
     line-height: 40px;
     color: #ebebeb;
     font-style: normal;
-    margin: 16px 0;
+    margin: 48px 0 16px 0;
   }
 
   .Post__description {
