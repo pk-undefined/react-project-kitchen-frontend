@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import agent from '../../agent';
 import ArticleList from '../article-list/article-list';
 import { CHANGE_TAB } from '../../constants/actionTypes';
-import { Tab, TabsList } from './styled-main-view';
+import { TabsList } from './styled-main-view';
+import Tab from '../tab/tab';
 
 const YourFeedTab = (props) => {
   if (props.token) {
@@ -14,7 +15,7 @@ const YourFeedTab = (props) => {
 
     return (
       <li>
-        <Tab href="" active={props.tab === 'feed'} onClick={clickHandler}>
+        <Tab to="" active={props.tab === 'feed'} onClick={clickHandler}>
           Ваша лента
         </Tab>
       </li>
@@ -30,7 +31,7 @@ const GlobalFeedTab = (props) => {
   };
   return (
     <li>
-      <Tab href="" active={props.tab === 'all'} onClick={clickHandler}>
+      <Tab to="" active={props.tab === 'all'} onClick={clickHandler}>
         Лента
       </Tab>
     </li>
@@ -44,7 +45,7 @@ const TagFilterTab = (props) => {
 
   return (
     <li>
-      <Tab href="" active>
+      <Tab to="" active>
         #
         {props.tag}
       </Tab>
