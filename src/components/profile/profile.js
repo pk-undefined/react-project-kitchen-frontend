@@ -23,6 +23,7 @@ const EditProfileSettings = (props) => {
 };
 
 const FollowUserButton = (props) => {
+  console.log(props);
   if (props.isUser) {
     return null;
   }
@@ -62,6 +63,7 @@ const Profile = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUsername = history.location.pathname.split('/')[1].slice(1);
+  const { user } = useSelector((state) => state.auth);
   const { profile } = useSelector((state) => state.profile);
   const [page, setPage] = useState(0);
   const countPage = 5;
@@ -72,23 +74,23 @@ const Profile = (props) => {
 
   useEffect(() => {
     if (props.url === 'favorites') {
-      dispatch(requestArticleFavoritedBy(currentUsername));
+      dispatch(requestArticleFavoritedBy({ author: currentUsername, page }));
     } else {
-      dispatch(requestArticleByAuthor({ currentUsername, page }));
+      dispatch(requestArticleByAuthor({ author: currentUsername, page }));
     }
   }, [currentUsername, page]);
-  console.log(history.location.pathname.split('/')[1].slice(1));
+
   const {
     articles,
     articlesCount,
     currentPage,
   } = useSelector((state) => state.article.articleList);
-  console.log(articles);
+
   if (!profile) {
     return <>Error</>;
   }
 
-  const isUser = currentUsername && profile.username === currentUsername;
+  const isUser = currentUsername && user.username === currentUsername;
 
   return (
     <div className="profile-page">

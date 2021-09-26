@@ -38,8 +38,8 @@ export const requestArticleFavorite = createAsyncThunk(
 );
 export const requestArticleFavoritedBy = createAsyncThunk(
   'article/favoritedBy',
-  async (author) => {
-    const response = await ArticleService.favoritedBy(author);
+  async ({ author, page }) => {
+    const response = await ArticleService.favoritedBy(author, page);
     return response.data;
   },
 );
