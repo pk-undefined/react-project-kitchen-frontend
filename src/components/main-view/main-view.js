@@ -7,6 +7,7 @@ import {
   setTag,
   requestArticleAllPage,
   requestArticleFeed,
+  requestArticleByTag,
 } from '../../store/articleSlice';
 
 const YourFeedTab = (props) => {
@@ -47,16 +48,21 @@ const GlobalFeedTab = (props) => {
   );
 };
 
-const TagFilterTab = (props) => {
-  if (!props.tag) {
+const TagFilterTab = ({ tag }) => {
+  const dispatch = useDispatch();
+  if (!tag) {
     return null;
   }
+  dispatch(setTab(''));
+  useEffect(() => {
+    dispatch(requestArticleByTag({ tag, page: 0 }));
+  }, [dispatch, tag]);
 
   return (
     <li>
       <Tab href="" active>
         #
-        {props.tag}
+        {tag}
       </Tab>
     </li>
   );
@@ -74,8 +80,13 @@ const MainView = () => {
   } = useSelector((state) => state.article.articleList);
 
   useEffect(() => {
-    if (isAuth) dispatch(setTab('feed'));
-    else dispatch(setTab('all'));
+    if (isAuth) {
+      dispatch(requestArticleFeed());
+      dispatch(setTab('feed'));
+    } else {
+      dispatch(requestArticleAllPage());
+      dispatch(setTab('all'));
+    }
     return () => {
       dispatch(setTab(''));
       dispatch(setTag(''));

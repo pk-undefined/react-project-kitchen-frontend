@@ -35,6 +35,20 @@ body {
   background-color: var(--bg-color-primary);
 }
 
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.2); 
+  -webkit-box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.2); 
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;

@@ -1,33 +1,45 @@
-import React from 'react';
-import agent from '../../agent';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { TagsTitle, TagsList, Tag } from './styled-tags';
+import {
+  setTag,
+  requestArticleGetAllTags,
+} from '../../store/articleSlice';
 
-const tags = ['Tag', 'tag', 'TAG', 'React', 'css', 'Redux'];
+const Tags = () => {
+  const dispatch = useDispatch();
+  const { tags } = useSelector((state) => state.article.articleList);
+  const activeTag = useSelector((state) => state.article.articleList.tag);
 
-const Tags = ({ activeTag, onClickTag }) => (
-  <>
-    <TagsTitle>Популярные теги</TagsTitle>
-    <TagsList>
-      {tags
-        ? tags.map((tag) => {
-          const handleClick = (ev) => {
-            ev.preventDefault();
-            onClickTag(
-              tag,
-              (page) => agent.Articles.byTag(tag, page),
-              agent.Articles.byTag(tag),
+  useEffect(() => {
+    dispatch(requestArticleGetAllTags());
+  }, []);
+
+  const onClickTag = (tag) => {
+    dispatch(setTag(tag));
+  };
+
+  return (
+    <>
+      <TagsTitle>Популярные теги</TagsTitle>
+      <TagsList>
+        {tags
+          ? tags.map((tag) => {
+            const handleClick = (ev) => {
+              ev.preventDefault();
+              onClickTag(tag);
+            };
+
+            return (
+              <Tag href="" active={tag === activeTag} key={tag} onClick={handleClick}>
+                {tag}
+              </Tag>
             );
-          };
-
-          return (
-            <Tag href="" active={tag === activeTag} key={tag} onClick={handleClick}>
-              {tag}
-            </Tag>
-          );
-        })
-        : 'Loading Tags...'}
-    </TagsList>
-  </>
-);
+          })
+          : 'Loading Tags...'}
+      </TagsList>
+    </>
+  );
+};
 
 export default Tags;

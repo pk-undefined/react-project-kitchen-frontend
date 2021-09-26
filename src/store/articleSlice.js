@@ -18,8 +18,8 @@ export const requestArticleByAuthor = createAsyncThunk(
 );
 export const requestArticleByTag = createAsyncThunk(
   'article/byTag',
-  async (formData) => {
-    const response = await ArticleService.byTag(formData);
+  async ({ tag, page }) => {
+    const response = await ArticleService.byTag(tag, page);
     return response.data;
   },
 );
@@ -148,6 +148,12 @@ const articleSlice = createSlice({
       state.isError = false;
     },
     [requestArticleFeed.rejected.toString()]: (state) => { state.isError = true; },
+    [requestArticleByTag.fulfilled.toString()]: (state, action) => {
+      state.articleList.articles = action.payload.articles;
+      state.articleList.articlesCount = action.payload.articlesCount;
+      state.isError = false;
+    },
+    [requestArticleByTag.rejected.toString()]: (state) => { state.isError = true; },
 
     [requestArticleCreate.fulfilled.toString()]: (state, action) => {
       state.article.article = action.payload.article;
