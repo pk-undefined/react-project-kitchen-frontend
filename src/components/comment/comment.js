@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
+import ArticleMeta from '../article-meta/article-meta';
+import { CommentText, InfoContainer, StyledComment } from './styled-comment';
 import DeleteButton from '../UI/delete-button/delete-button';
 
 const Comment = (props) => {
@@ -7,30 +8,13 @@ const Comment = (props) => {
   const show = props.currentUser
     && props.currentUser.username === comment.author.username;
   return (
-    <div className="card">
-      <div className="card-block">
-        <p className="card-text">{comment.body}</p>
-      </div>
-      <div className="card-footer">
-        <Link
-          to={`/@${comment.author.username}`}
-          className="comment-author"
-        >
-          <img src={comment.author.image} className="comment-author-img" alt={comment.author.username} />
-        </Link>
-        &nbsp;
-        <Link
-          to={`/@${comment.author.username}`}
-          className="comment-author"
-        >
-          {comment.author.username}
-        </Link>
-        <span className="date-posted">
-          {new Date(comment.createdAt).toDateString()}
-        </span>
+    <StyledComment>
+      <CommentText>{comment.body}</CommentText>
+      <InfoContainer>
+        <ArticleMeta article={comment} canModify={false} isComment />
         <DeleteButton show={show} slug={props.slug} commentId={comment.id} />
-      </div>
-    </div>
+      </InfoContainer>
+    </StyledComment>
   );
 };
 

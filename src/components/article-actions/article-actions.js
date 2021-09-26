@@ -3,6 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import agent from '../../agent';
 import { DELETE_ARTICLE } from '../../constants/actionTypes';
+import { Button } from '../UI/button/styled-button';
+import icons from '../UI/icons/icons';
+import { StyledActions, ButtonText } from './styled-article-actions';
 
 const mapDispatchToProps = (dispatch) => ({
   onClickDelete: (payload) => dispatch({ type: DELETE_ARTICLE, payload }),
@@ -10,29 +13,27 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ArticleActions = (props) => {
   const { article } = props;
+  const { EditIcon, DeleteIcon } = icons;
   const del = () => {
     props.onClickDelete(agent.Articles.del(article.slug));
   };
   if (props.canModify) {
     return (
-      <span>
-
+      <StyledActions>
         <Link
           to={`/editor/${article.slug}`}
-          className="btn btn-outline-secondary btn-sm"
         >
-          <i className="ion-edit" />
-          {' '}
-          Edit Article
+          <Button type="button" withoutMargin>
+            <EditIcon />
+            <ButtonText>Редактировать запись</ButtonText>
+          </Button>
         </Link>
 
-        <button type="button" className="btn btn-outline-danger btn-sm" onClick={del}>
-          <i className="ion-trash-a" />
-          {' '}
-          Delete Article
-        </button>
-
-      </span>
+        <Button type="button" onClick={del} withoutMargin secondary>
+          <DeleteIcon />
+          <ButtonText>Удалить запись</ButtonText>
+        </Button>
+      </StyledActions>
     );
   }
 

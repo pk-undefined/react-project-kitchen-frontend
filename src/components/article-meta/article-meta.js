@@ -5,12 +5,12 @@ import Like from '../UI/like/like';
 import { StyledArticleMeta } from './styled-article-meta';
 
 const ArticleMeta = (props) => {
-  const { article, canModify } = props;
+  const { article, canModify, isComment } = props;
 
   return (
     <StyledArticleMeta>
       <UserInfo article={article} />
-      {!canModify && <Like article={article} />}
+      {!canModify && !isComment && <Like article={article} />}
       <ArticleActions canModify={canModify} article={article} />
     </StyledArticleMeta>
   );

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import agent from '../../agent';
 import ArticleList from '../article-list/article-list';
@@ -9,58 +8,21 @@ import {
   PROFILE_PAGE_LOADED,
   PROFILE_PAGE_UNLOADED,
 } from '../../constants/actionTypes';
-
-const EditProfileSettings = (props) => {
-  if (props.isUser) {
-    return (
-      <Link
-        to="/settings"
-        className="btn btn-sm btn-outline-secondary action-btn"
-      >
-        <i className="ion-gear-a" />
-        {' '}
-        Edit Profile Settings
-      </Link>
-    );
-  }
-  return null;
-};
-
-const FollowUserButton = (props) => {
-  if (props.isUser) {
-    return null;
-  }
-
-  let classes = 'btn btn-sm action-btn';
-  if (props.user.following) {
-    classes += ' btn-secondary';
-  } else {
-    classes += ' btn-outline-secondary';
-  }
-
-  const handleClick = (ev) => {
-    ev.preventDefault();
-    if (props.user.following) {
-      props.unfollow(props.user.username);
-    } else {
-      props.follow(props.user.username);
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      className={classes}
-      onClick={handleClick}
-    >
-      <i className="ion-plus-round" />
-      &nbsp;
-      {props.user.following ? 'Unfollow' : 'Follow'}
-      {' '}
-      {props.user.username}
-    </button>
-  );
-};
+import {
+  ProfilePage,
+  TabsList,
+  Title,
+  UserProfile,
+  Avatar,
+  ButtonText,
+  StyledLink,
+  Sidebar,
+  Content,
+} from './styled-profile';
+import Tab from '../tab/tab';
+import { Button } from '../UI/button/styled-button';
+import Tags from '../tags/tags';
+import icons from '../UI/icons/icons';
 
 const mapStateToProps = (state) => ({
   ...state.articleList,
@@ -81,100 +43,112 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: PROFILE_PAGE_UNLOADED }),
 });
 
-class Profile extends React.Component {
-  componentWillMount() {
-    this.props.onLoad(Promise.all([
-      agent.Profile.get(this.props.match.params.username),
-      agent.Articles.byAuthor(this.props.match.params.username),
-    ]));
-  }
+const Profile = (props) => {
+  const {
+    profile,
+    currentUser,
+    onLoad,
+    onUnload,
+    onFollow,
+    onUnfollow,
+    pager,
+    articles,
+    articlesCount,
+    currentPage,
+  } = props;
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
-
-  renderTabs() {
-    return (
-      <ul className="nav nav-pills outline-active">
-        <li className="nav-item">
-          <Link
-            className="nav-link active"
-            to={`/@${this.props.profile.username}`}
-          >
-            My Articles
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            to={`/@${this.props.profile.username}/favorites`}
-          >
-            Favorited Articles
-          </Link>
-        </li>
-      </ul>
+  const { EditIcon, PlusIcon, MinusIcon } = icons;
+  const [currentTab, setCurrentTab] = useState('all');
+  useEffect(() => {
+    onLoad(
+      Promise.all([
+        agent.Profile.get(props.match.params.username),
+        agent.Articles.byAuthor(props.match.params.username),
+      ]),
     );
+    console.log('profffile', profile);
+    return () => {
+      onUnload();
+    };
+  }, []);
+
+  if (!profile) {
+    return null;
   }
 
-  render() {
-    const { profile } = this.props;
-    if (!profile) {
-      return null;
+  const toggleFollow = (ev) => {
+    ev.preventDefault();
+    if (profile.following) {
+      onUnfollow(props.user.username);
+    } else {
+      onFollow(profile.username);
     }
+  };
+  // TODO: добавить переключение через роутер
+  const handleTabClick = (e) => {
+    e.preventDefault();
+    setCurrentTab(e.target.name);
+    console.log('TODO: добавить переключение через роутер');
+  };
 
-    const isUser = this.props.currentUser
-      && this.props.profile.username === this.props.currentUser.username;
+  const isUser = currentUser && profile.username === currentUser.username;
 
-    return (
-      <div className="profile-page">
-
-        <div className="user-info">
-          <div className="container">
-            <div className="row">
-              <div className="col-xs-12 col-md-10 offset-md-1">
-
-                <img src={profile.image} className="user-img" alt={profile.username} />
-                <h4>{profile.username}</h4>
-                <p>{profile.bio}</p>
-
-                <EditProfileSettings isUser={isUser} />
-                <FollowUserButton
-                  isUser={isUser}
-                  user={profile}
-                  follow={this.props.onFollow}
-                  unfollow={this.props.onUnfollow}
-                />
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="row">
-
-            <div className="col-xs-12 col-md-10 offset-md-1">
-
-              <div className="articles-toggle">
-                {this.renderTabs()}
-              </div>
-
-              <ArticleList
-                pager={this.props.pager}
-                articles={this.props.articles}
-                articlesCount={this.props.articlesCount}
-                state={this.props.currentPage}
-              />
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    );
-  }
-}
+  return (
+    <ProfilePage>
+      <UserProfile>
+        <Avatar src={profile.image} alt={profile.username} />
+        <Title>{profile.username}</Title>
+        {isUser ? (
+          <StyledLink to="/settings">
+            <Button type="button" withoutMargin>
+              <EditIcon />
+              Редактировать профиль
+            </Button>
+          </StyledLink>
+        ) : (
+          <Button type="button" onClick={toggleFollow}>
+            {profile && profile.following ? <MinusIcon /> : <PlusIcon />}
+            <ButtonText>
+              {profile && profile.following ? 'Отписаться' : 'Подписаться'}
+            </ButtonText>
+          </Button>
+        )}
+      </UserProfile>
+      <TabsList>
+        <Tab
+          to={`/@${profile.username}`}
+          active={currentTab === 'all'}
+          onClick={handleTabClick}
+          name="all"
+        >
+          Ваши посты
+        </Tab>
+        <Tab
+          to={`/@${profile.username}/favorites`}
+          active={currentTab === 'favourite'}
+          onClick={handleTabClick}
+          name="favourite"
+        >
+          Любимые посты
+        </Tab>
+      </TabsList>
+      <Content>
+        <ArticleList
+          pager={pager}
+          articles={articles}
+          articlesCount={articlesCount}
+          state={currentPage}
+        />
+        <Sidebar>
+          <Tags
+            activeTag={props.tag}
+            tags={props.tags}
+            onClickTag={props.onClickTag}
+          />
+        </Sidebar>
+      </Content>
+    </ProfilePage>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-// export { Profile, mapStateToProps };
