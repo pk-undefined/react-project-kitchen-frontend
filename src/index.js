@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import App from './components/app/App';
 
-import { store } from './store';
+import store from './store/index';
 
 import { fontFaces } from './fonts/fonts';
 

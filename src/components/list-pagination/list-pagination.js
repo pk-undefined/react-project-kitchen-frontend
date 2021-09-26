@@ -1,29 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import agent from '../../agent';
-import { SET_PAGE } from '../../constants/actionTypes';
-
-const mapDispatchToProps = (dispatch) => ({
-  onSetPage: (page, payload) => dispatch({ type: SET_PAGE, page, payload }),
-});
 
 const ListPagination = (props) => {
-  if (props.articlesCount <= 10) {
+  if (props.articlesCount <= props.countPage) {
     return null;
   }
 
   const range = [];
-  for (let i = 0; i < Math.ceil(props.articlesCount / 10); ++i) {
+  for (let i = 0; i < Math.ceil(props.articlesCount / props.countPage); ++i) {
     range.push(i);
   }
-
-  const setPage = (page) => {
-    if (props.pager) {
-      props.onSetPage(page, props.pager(page));
-    } else {
-      props.onSetPage(page, agent.Articles.all(page));
-    }
-  };
 
   return (
     <nav>
@@ -34,7 +19,7 @@ const ListPagination = (props) => {
             const isCurrent = v === props.currentPage;
             const onClick = (ev) => {
               ev.preventDefault();
-              setPage(v);
+              props.setPager(v);
             };
             return (
               <li
@@ -56,4 +41,4 @@ const ListPagination = (props) => {
   );
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ListPagination);
+export default ListPagination;

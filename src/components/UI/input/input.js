@@ -17,6 +17,7 @@ const InputComponent = (props) => {
           placeholder={props.placeholder}
           value={props.value}
           onChange={props.onChange}
+          name={props.name}
           error={error}
         />
         {!error && (
@@ -45,6 +46,7 @@ const InputComponent = (props) => {
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}
+        name={props.name}
         error={error}
       />
       {error && (

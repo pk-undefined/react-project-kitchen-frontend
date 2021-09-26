@@ -1,34 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import like from '../../../images/like.svg';
 import likeActive from '../../../images/like-active.svg';
-import agent from '../../../agent';
-import {
-  ARTICLE_FAVORITED,
-  ARTICLE_UNFAVORITED,
-} from '../../../constants/actionTypes';
+import { requestArticleFavorite, requestArticleUnfavorite } from '../../../store/articleSlice';
 
-const mapDispatchToProps = (dispatch) => ({
-  favorite: (slug) => dispatch({
-    type: ARTICLE_FAVORITED,
-    payload: agent.Articles.favorite(slug),
-  }),
-  unfavorite: (slug) => dispatch({
-    type: ARTICLE_UNFAVORITED,
-    payload: agent.Articles.unfavorite(slug),
-  }),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   favorite: (slug) => dispatch({
+//     type: ARTICLE_FAVORITED,
+//     payload: agent.Articles.favorite(slug),
+//   }),
+//   unfavorite: (slug) => dispatch({
+//     type: ARTICLE_UNFAVORITED,
+//     payload: agent.Articles.unfavorite(slug),
+//   }),
+// });
 
 const Like = (props) => {
+  const dispatch = useDispatch();
   const { article } = props;
+
   const handleClick = (ev) => {
     ev.preventDefault();
-    console.log('click');
+    console.log(article.favorited);
     if (article.favorited) {
-      props.unfavorite(article.slug);
+      dispatch(requestArticleUnfavorite(article.slug));
     } else {
-      props.favorite(article.slug);
+      dispatch(requestArticleFavorite(article.slug));
     }
   };
 
@@ -78,4 +76,4 @@ const LikeButton = styled.button`
   }
 `;
 
-export default connect(() => ({}), mapDispatchToProps)(Like);
+export default Like;

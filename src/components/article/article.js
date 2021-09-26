@@ -1,28 +1,23 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import ArticleMeta from '../article-meta/article-meta';
 import CommentContainer from '../comment-container/comment-container';
-import agent from '../../agent';
-import { ARTICLE_PAGE_LOADED, ARTICLE_PAGE_UNLOADED } from '../../constants/actionTypes';
 import Post from '../post/post';
-import { ARTICLE_POLYFILL, COMMENTS_POLYFILL } from '../../constants/consts';
+import { requestArticleGet, requestArticleForArticle } from '../../store/articleSlice';
 
-const mapStateToProps = (state) => ({
-  ...state.article,
-  currentUser: state.common.currentUser,
-});
+const Article = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const currentArticle = history.location.pathname.slice(9);
 
-const mapDispatchToProps = (dispatch) => ({
-  onLoad: (payload) => dispatch({ type: ARTICLE_PAGE_LOADED, payload }),
-  onUnload: () => dispatch({ type: ARTICLE_PAGE_UNLOADED }),
-});
+  useEffect(() => {
+    dispatch(requestArticleGet(currentArticle));
+    dispatch(requestArticleForArticle(currentArticle));
+  }, [dispatch]);
 
-const Article = (props) => {
-  const {
-    onLoad, onUnload, match,
-    article = ARTICLE_POLYFILL, currentUser = {},
-    comments = COMMENTS_POLYFILL, commentErrors,
-  } = props;
+  const currentUser = useSelector((state) => state.auth.user);
+  const { article, comments } = useSelector((state) => state.article.article);
 
   const {
     body,
@@ -31,32 +26,15 @@ const Article = (props) => {
     tagList = [],
   } = article;
 
-  const { id: matchId } = match.params;
   const currentUserUsername = currentUser?.username;
   const authorUsername = author?.username;
-  const { Articles, Comments } = agent;
-
-  const getArticleAndComments = async () => {
-    try {
-      return await Promise.all([
-        Articles.get(matchId),
-        Comments.forArticle(matchId),
-      ]);
-    } catch (e) {
-      throw new Error(`ошибка из кэтча:${e}`);
-    }
-  };
-
-  useEffect(() => {
-    onLoad(getArticleAndComments());
-
-    return () => onUnload();
-  }, []);
 
   const canModify = currentUser
     && currentUserUsername === authorUsername;
 
-  return article && (
+  const isArticle = Object.keys(article).length > 0;
+
+  return isArticle && (
     <div className="article-page">
 
       <div className="banner">
@@ -100,8 +78,8 @@ const Article = (props) => {
         <div className="row">
           <CommentContainer
             comments={comments}
-            errors={commentErrors}
-            slug={matchId}
+            // errors={commentErrors}
+            slug={currentArticle}
             currentUser={currentUser}
           />
         </div>
@@ -110,4 +88,4 @@ const Article = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Article);
+export default Article;

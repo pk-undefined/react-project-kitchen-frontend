@@ -1,42 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import agent from '../../agent';
-import { LOGIN, REGISTER } from '../../constants/actionTypes';
 import ButtonComponent from '../UI/button/button';
 import {
   Container, StyledForm, Title, RegLink,
 } from './common/styled-form';
-
-const mapStateToProps = (state) => ({
-  ...state.auth,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onLogin: (email, password) => dispatch({
-    type: LOGIN,
-    payload: agent.Auth.login(email, password),
-  }),
-  onRegister: (username, email, password) => {
-    const payload = agent.Auth.register(username, email, password);
-    dispatch({ type: REGISTER, payload });
-  },
-});
+import { requestLogin, requestRegister } from '../../store/authSlice';
 
 const AuthForm = (props) => {
+  const dispatch = useDispatch();
   const {
-    email, password, username, title, linkText, link, formType,
+    title, linkText, link, data,
   } = props;
   const submitForm = (ev) => {
     ev.preventDefault();
-    if (formType === 'REGISTER') {
-      props.onRegister(username, email, password);
+    if (title === 'Войти') {
+      dispatch(requestLogin({ email: data.email, password: data.password }));
     }
-    if (formType === 'LOGIN') {
-      props.onLogin(email, password);
+    if (title === 'Зарегистрироваться') {
+      dispatch(requestRegister({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }));
     }
   };
-  // useEffect(() => () => props.onUnload(formType), []);
 
   return (
     <Container>
@@ -56,4 +44,4 @@ const AuthForm = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);
+export default AuthForm;

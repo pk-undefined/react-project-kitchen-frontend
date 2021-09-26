@@ -1,89 +1,66 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Fieldset from '../UI/fieldset/fieldset';
-import agent from '../../agent';
-import {
-  ADD_TAG,
-  EDITOR_PAGE_LOADED,
-  REMOVE_TAG,
-  ARTICLE_SUBMITTED,
-  EDITOR_PAGE_UNLOADED,
-  UPDATE_FIELD_EDITOR,
-} from '../../constants/actionTypes';
 import ButtonComponent from '../UI/button/button';
 import {
   Container, StyledForm, Title,
 } from './common/styled-form';
+import { requestArticleCreate, requestArticleUpdate, requestArticleGet } from '../../store/articleSlice';
 
-const mapStateToProps = (state) => ({
-  ...state.editor,
-});
+const NewPostForm = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const currentArticle = history.location.pathname.slice(8);
 
-const mapDispatchToProps = (dispatch) => ({
-  onAddTag: () => dispatch({ type: ADD_TAG }),
-  onLoad: (payload) => dispatch({ type: EDITOR_PAGE_LOADED, payload }),
-  onRemoveTag: (tag) => dispatch({ type: REMOVE_TAG, tag }),
-  onSubmit: (payload) => dispatch({ type: ARTICLE_SUBMITTED, payload }),
-  // eslint-disable-next-line no-unused-vars
-  onUnload: (payload) => dispatch({ type: EDITOR_PAGE_UNLOADED }),
-  onUpdateField: (key, value) => dispatch({ type: UPDATE_FIELD_EDITOR, key, value }),
-});
+  const article = useSelector((state) => state.article.article.article);
 
-const NewPostForm = (props) => {
-  const {
-    body, description, title, tagInput, onUpdateField, tagList,
-    onAddTag, articleSlug, onLoad, onUnload, onSubmit, image,
-  } = props;
+  const [state, setState] = useState({
+    title: '',
+    description: '',
+    body: '',
+    tagList: '',
+    image: '',
+  });
 
-  const updateFieldEvent = (key) => (ev) => onUpdateField(key, ev.target.value);
-  const changeTitle = updateFieldEvent('title');
-  const changeDescription = updateFieldEvent('description');
-  const changeBody = updateFieldEvent('body');
-  const changeTagInput = updateFieldEvent('tagInput');
-  const changeImage = updateFieldEvent('image');
-
-  const watchForEnter = (ev) => {
-    if (ev.keyCode === 13) {
-      ev.preventDefault();
-      onAddTag();
+  useEffect(() => {
+    if (currentArticle) {
+      setState({
+        ...state,
+        ...article,
+      });
     }
+  }, [article]);
+
+  const onChange = (event) => {
+    const { target } = event;
+    const { value } = target;
+    const { name } = target;
+    setState({
+      ...state,
+      [name]: value,
+    });
   };
+
+  useEffect(() => {
+    dispatch(requestArticleGet(currentArticle));
+  }, [dispatch]);
+
+  // const watchForEnter = (ev) => {
+  //   if (ev.keyCode === 13) {
+  //     ev.preventDefault();
+  //     onAddTag();
+  //   }
+  // };
 
   const submitForm = (ev) => {
     ev.preventDefault();
-    const article = {
-      title,
-      description,
-      body,
-      tagList,
-      image,
-    };
-
-    const slug = { slug: articleSlug };
-    const promise = articleSlug
-      ? agent.Articles.update(Object.assign(article, slug))
-      : agent.Articles.create(article);
-
-    onSubmit(promise);
+    if (currentArticle) {
+      dispatch(requestArticleUpdate(state));
+    } else {
+      dispatch(requestArticleCreate(state));
+    }
   };
-
-  // eslint-disable-next-line consistent-return,react/sort-comp
-  useEffect(() => {
-    if (props.match.params.slug) {
-      onUnload();
-      return onLoad(agent.Articles.get(props.match.params.slug));
-    }
-    onLoad(null);
-  }, [props.match.params.slug]);
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (props.match.params.slug) {
-      return onLoad(agent.Articles.get(props.match.params.slug));
-    }
-    onLoad(null);
-    return () => onUnload();
-  }, []);
 
   return (
     <Container>
@@ -92,51 +69,51 @@ const NewPostForm = (props) => {
         <fieldset>
           <Fieldset
             type="text"
-            fieldName="Заголовок"
-            fieldValue={title}
+            fieldName="title"
+            fieldValue={state.title}
             placeholder="Название статьи"
-            handleInputChange={changeTitle}
-            errors={props.errors}
+            handleInputChange={onChange}
+            // errors={props.errors}
           />
           <Fieldset
             type="text"
-            fieldName="Описание"
-            fieldValue={description}
+            fieldName="description"
+            fieldValue={state.description}
             placeholder="О чем статья"
-            handleInputChange={changeDescription}
-            errors={props.errors}
+            handleInputChange={onChange}
+            // errors={props.errors}
           />
           <Fieldset
             includesLoader
             type="url"
-            fieldName="Изображение"
-            fieldValue={image}
+            fieldName="image"
+            fieldValue={state.image}
             placeholder="Изображение(опционально)"
-            handleInputChange={changeImage}
-            errors={props.errors}
+            handleInputChange={onChange}
+            // errors={props.errors}
           />
           <Fieldset
             isTextarea
-            fieldName="Содержание"
-            placeholder="Текст статьи"
-            fieldValue={body}
-            handleInputChange={changeBody}
-            errors={props.errors}
+            fieldName="body"
+            placeholder="Содержание"
+            fieldValue={state.body}
+            handleInputChange={onChange}
+            // errors={props.errors}
           />
           <Fieldset
             type="text"
-            fieldName="Тэги"
-            fieldValue={tagInput}
+            fieldName="tagList"
+            fieldValue={state.tagList}
             placeholder="Тэги (через запятую)"
-            handleInputChange={changeTagInput}
-            onKeyUp={watchForEnter}
-            errors={props.errors}
+            handleInputChange={onChange}
+            // onKeyUp={watchForEnter}
+            // errors={props.errors}
           />
         </fieldset>
-        <ButtonComponent>Опубликовать</ButtonComponent>
+        <ButtonComponent>{currentArticle ? 'Сохранить' : 'Опубликовать'}</ButtonComponent>
       </StyledForm>
     </Container>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPostForm);
+export default NewPostForm;

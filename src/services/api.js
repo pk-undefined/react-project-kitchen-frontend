@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+// const API_URL = 'http://localhost:3000/api';
+const API_ROOT = 'http://194.58.119.115:3000/api';
 
 const axiosAPI = axios.create({
-  baseURL: API_URL,
+  baseURL: API_ROOT,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,7 +12,7 @@ const axiosAPI = axios.create({
 
 axiosAPI.interceptors.request.use((config) => {
   /* eslint no-param-reassign: "error" */
-  config.headers.Authorization = `Token ${localStorage.getItem('jwt')}`;
+  config.headers.Authorization = `Token ${localStorage.getItem('Token')}`;
   return config;
 });
 

@@ -1,14 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import agent from '../../agent';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import ArticleList from '../article-list/article-list';
-import {
-  FOLLOW_USER,
-  UNFOLLOW_USER,
-  PROFILE_PAGE_LOADED,
-  PROFILE_PAGE_UNLOADED,
-} from '../../constants/actionTypes';
+import { requestGetProfile } from '../../store/profileSlice';
+import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/articleSlice';
+import ProfileService from '../../services/profile-service';
 
 const EditProfileSettings = (props) => {
   if (props.isUser) {
@@ -19,7 +15,7 @@ const EditProfileSettings = (props) => {
       >
         <i className="ion-gear-a" />
         {' '}
-        Edit Profile Settings
+        Редактировать профиль
       </Link>
     );
   }
@@ -41,9 +37,9 @@ const FollowUserButton = (props) => {
   const handleClick = (ev) => {
     ev.preventDefault();
     if (props.user.following) {
-      props.unfollow(props.user.username);
+      ProfileService.unfollow(props.user.username);
     } else {
-      props.follow(props.user.username);
+      ProfileService.follow(props.user.username);
     }
   };
 
@@ -55,126 +51,110 @@ const FollowUserButton = (props) => {
     >
       <i className="ion-plus-round" />
       &nbsp;
-      {props.user.following ? 'Unfollow' : 'Follow'}
+      {props.user.following ? 'Отписаться от' : 'Подписаться на'}
       {' '}
       {props.user.username}
     </button>
   );
 };
 
-const mapStateToProps = (state) => ({
-  ...state.articleList,
-  currentUser: state.common.currentUser,
-  profile: state.profile,
-});
+const Profile = (props) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const currentUsername = history.location.pathname.slice(2);
+  const { profile } = useSelector((state) => state.profile);
+  const [page, setPage] = useState(0);
+  const countPage = 5;
 
-const mapDispatchToProps = (dispatch) => ({
-  onFollow: (username) => dispatch({
-    type: FOLLOW_USER,
-    payload: agent.Profile.follow(username),
-  }),
-  onLoad: (payload) => dispatch({ type: PROFILE_PAGE_LOADED, payload }),
-  onUnfollow: (username) => dispatch({
-    type: UNFOLLOW_USER,
-    payload: agent.Profile.unfollow(username),
-  }),
-  onUnload: () => dispatch({ type: PROFILE_PAGE_UNLOADED }),
-});
+  useEffect(() => {
+    dispatch(requestGetProfile(currentUsername));
+  }, [currentUsername]);
 
-class Profile extends React.Component {
-  componentWillMount() {
-    this.props.onLoad(Promise.all([
-      agent.Profile.get(this.props.match.params.username),
-      agent.Articles.byAuthor(this.props.match.params.username),
-    ]));
-  }
-
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
-
-  renderTabs() {
-    return (
-      <ul className="nav nav-pills outline-active">
-        <li className="nav-item">
-          <Link
-            className="nav-link active"
-            to={`/@${this.props.profile.username}`}
-          >
-            My Articles
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            to={`/@${this.props.profile.username}/favorites`}
-          >
-            Favorited Articles
-          </Link>
-        </li>
-      </ul>
-    );
-  }
-
-  render() {
-    const { profile } = this.props;
-    if (!profile) {
-      return null;
+  useEffect(() => {
+    if (props.url === 'favorites') {
+      dispatch(requestArticleFavoritedBy(currentUsername));
+    } else {
+      dispatch(requestArticleByAuthor({ currentUsername, page }));
     }
+  }, [currentUsername, page]);
+  console.log(props);
+  const {
+    articles,
+    articlesCount,
+    currentPage,
+  } = useSelector((state) => state.article.articleList);
+  console.log(articles);
+  if (!profile) {
+    return <>Error</>;
+  }
 
-    const isUser = this.props.currentUser
-      && this.props.profile.username === this.props.currentUser.username;
+  const isUser = currentUsername && profile.username === currentUsername;
 
-    return (
-      <div className="profile-page">
+  return (
+    <div className="profile-page">
 
-        <div className="user-info">
-          <div className="container">
-            <div className="row">
-              <div className="col-xs-12 col-md-10 offset-md-1">
-
-                <img src={profile.image} className="user-img" alt={profile.username} />
-                <h4>{profile.username}</h4>
-                <p>{profile.bio}</p>
-
-                <EditProfileSettings isUser={isUser} />
-                <FollowUserButton
-                  isUser={isUser}
-                  user={profile}
-                  follow={this.props.onFollow}
-                  unfollow={this.props.onUnfollow}
-                />
-
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div className="user-info">
         <div className="container">
           <div className="row">
-
             <div className="col-xs-12 col-md-10 offset-md-1">
 
-              <div className="articles-toggle">
-                {this.renderTabs()}
-              </div>
+              <img src={profile.image} className="user-img" alt={profile.username} />
+              <h4>{profile.username}</h4>
+              <p>{profile.bio}</p>
 
-              <ArticleList
-                pager={this.props.pager}
-                articles={this.props.articles}
-                articlesCount={this.props.articlesCount}
-                state={this.props.currentPage}
+              <EditProfileSettings isUser={isUser} />
+              <FollowUserButton
+                isUser={isUser}
+                user={profile}
               />
-            </div>
 
+            </div>
           </div>
         </div>
-
       </div>
-    );
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-// export { Profile, mapStateToProps };
+      <div className="container">
+        <div className="row">
+
+          <div className="col-xs-12 col-md-10 offset-md-1">
+
+            <div className="articles-toggle">
+              <ul className="nav nav-pills outline-active">
+                <li className="nav-item">
+                  <Link
+                    className="nav-link active"
+                    to={`/@${profile.username}`}
+                  >
+                    Мои статьи
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link
+                    className="nav-link"
+                    to={`/@${profile.username}/favorites`}
+                  >
+                    Понравившиеся статьи
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <ArticleList
+              pager={page}
+              setPager={setPage}
+              countPage={countPage}
+              articles={articles}
+              articlesCount={articlesCount}
+              state={currentPage}
+            />
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+export default Profile;
