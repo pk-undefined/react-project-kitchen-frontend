@@ -61,7 +61,7 @@ const FollowUserButton = (props) => {
 const Profile = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const currentUsername = history.location.pathname.slice(2);
+  const currentUsername = history.location.pathname.split('/')[1].slice(1);
   const { profile } = useSelector((state) => state.profile);
   const [page, setPage] = useState(0);
   const countPage = 5;
@@ -77,7 +77,7 @@ const Profile = (props) => {
       dispatch(requestArticleByAuthor({ currentUsername, page }));
     }
   }, [currentUsername, page]);
-  console.log(props);
+  console.log(history.location.pathname.split('/')[1].slice(1));
   const {
     articles,
     articlesCount,
