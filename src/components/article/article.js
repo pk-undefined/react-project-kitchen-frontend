@@ -21,9 +21,9 @@ const Article = () => {
 
   const {
     body,
-    author = {},
+    author,
     title,
-    tagList = [],
+    tagList,
   } = article;
 
   const currentUserUsername = currentUser?.username;

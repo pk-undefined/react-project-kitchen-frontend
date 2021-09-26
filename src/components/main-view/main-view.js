@@ -1,15 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import agent from '../../agent';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ArticleList from '../article-list/article-list';
-import { CHANGE_TAB } from '../../constants/actionTypes';
 import { Tab, TabsList } from './styled-main-view';
+import {
+  setTab,
+  setTag,
+  requestArticleAllPage,
+  requestArticleFeed,
+} from '../../store/articleSlice';
 
 const YourFeedTab = (props) => {
+  const dispatch = useDispatch();
   if (props.token) {
     const clickHandler = (ev) => {
       ev.preventDefault();
-      props.onTabClick('feed', agent.Articles.feed, agent.Articles.feed());
+      dispatch(setTab('feed'));
+      dispatch(setTag(''));
+      dispatch(requestArticleFeed());
     };
 
     return (
@@ -24,9 +31,12 @@ const YourFeedTab = (props) => {
 };
 
 const GlobalFeedTab = (props) => {
+  const dispatch = useDispatch();
   const clickHandler = (ev) => {
     ev.preventDefault();
-    props.onTabClick('all', agent.Articles.all, agent.Articles.all());
+    dispatch(setTab('all'));
+    dispatch(setTag(''));
+    dispatch(requestArticleAllPage());
   };
   return (
     <li>
@@ -52,34 +62,41 @@ const TagFilterTab = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  ...state.articleList,
-  tags: state.home.tags,
-  token: state.common.token,
-});
+const MainView = () => {
+  const dispatch = useDispatch();
+  const isAuth = localStorage.getItem('Token');
+  const {
+    articles,
+    articlesCount,
+    currentPage,
+    tab,
+    tag,
+  } = useSelector((state) => state.article.articleList);
 
-const mapDispatchToProps = (dispatch) => ({
-  onTabClick: (tab, pager, payload) => dispatch({
-    type: CHANGE_TAB, tab, pager, payload,
-  }),
-});
+  useEffect(() => {
+    if (isAuth) dispatch(setTab('feed'));
+    else dispatch(setTab('all'));
+    return () => {
+      dispatch(setTab(''));
+      dispatch(setTag(''));
+    };
+  }, [dispatch]);
 
-const MainView = (props) => (
-  <>
-    <TabsList>
-      <YourFeedTab tab={props.tab} onTabClick={props.onTabClick} token={props.token} />
-      <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
-      <TagFilterTab tag={props.tag} />
-    </TabsList>
+  return (
+    <>
+      <TabsList>
+        <YourFeedTab tab={tab} token={isAuth} />
+        <GlobalFeedTab tab={tab} />
+        <TagFilterTab tag={tag} />
+      </TabsList>
 
-    <ArticleList
-      pager={props.pager}
-      articles={props.articles}
-      loading={props.loading}
-      articlesCount={props.articlesCount}
-      currentPage={props.currentPage}
-    />
-  </>
-);
+      <ArticleList
+        articles={articles}
+        articlesCount={articlesCount}
+        state={currentPage}
+      />
+    </>
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainView);
+export default MainView;

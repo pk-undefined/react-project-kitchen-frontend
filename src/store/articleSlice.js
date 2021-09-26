@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ArticleService from '../services/articles-service';
+import TagsService from '../services/tags-service';
 
 export const requestArticleAllPage = createAsyncThunk(
   'article/allPage',
-  async (formData) => {
-    const response = await ArticleService.all(formData);
+  async () => {
+    const response = await ArticleService.all();
     return response.data;
   },
 );
@@ -99,6 +100,13 @@ export const requestArticleForArticle = createAsyncThunk(
     return response.data;
   },
 );
+export const requestArticleGetAllTags = createAsyncThunk(
+  'article/getAllTags',
+  async () => {
+    const response = await TagsService.getAll();
+    return response.data;
+  },
+);
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 const articleSlice = createSlice({
@@ -112,19 +120,35 @@ const articleSlice = createSlice({
       articles: [],
       articlesCount: null,
       currentPage: null,
+      tags: [],
+      tag: '',
+      tab: '',
     },
     isError: false,
     isLoading: false,
   },
   reducers: {
-    updateFieldAuth: (state, action) => {
-      state.user.action.key = action.email;
+    setTab: (state, action) => {
+      state.articleList.tab = action.payload;
+    },
+    setTag: (state, action) => {
+      state.articleList.tag = action.payload;
     },
   },
   extraReducers: {
-    // [requestArticleAllPage.fulfilled.toString()]: (state, action) => {
-    // },
-    // [requestArticleAllPage.rejected.toString()]: (state) => { state.isError = true; },
+    [requestArticleAllPage.fulfilled.toString()]: (state, action) => {
+      state.articleList.articles = action.payload.articles;
+      state.articleList.articlesCount = action.payload.articlesCount;
+      state.isError = false;
+    },
+    [requestArticleAllPage.rejected.toString()]: (state) => { state.isError = true; },
+    [requestArticleFeed.fulfilled.toString()]: (state, action) => {
+      state.articleList.articles = action.payload.articles;
+      state.articleList.articlesCount = action.payload.articlesCount;
+      state.isError = false;
+    },
+    [requestArticleFeed.rejected.toString()]: (state) => { state.isError = true; },
+
     [requestArticleCreate.fulfilled.toString()]: (state, action) => {
       state.article.article = action.payload.article;
       state.isError = false;
@@ -178,10 +202,17 @@ const articleSlice = createSlice({
     //   state.isError = false;
     // },
     // [requestArticleUnfavorite.rejected.toString()]: (state) => { state.isError = true; },
+
+    [requestArticleGetAllTags.fulfilled.toString()]: (state, action) => {
+      state.articleList.tags = action.payload.tags;
+      state.isError = false;
+    },
+    [requestArticleGetAllTags.rejected.toString()]: (state) => { state.isError = true; },
   },
 });
 
 export const {
-  updateFieldAuth,
+  setTab,
+  setTag,
 } = articleSlice.actions;
 export default articleSlice.reducer;
