@@ -1,14 +1,12 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import React from 'react';
-
-import { Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { createGlobalStyle } from 'styled-components';
 import App from './components/app/App';
 
-import { store, history } from './store';
+import store from './store/index';
 
 import { fontFaces } from './fonts/fonts';
 
@@ -35,6 +33,20 @@ body {
   font-style: normal;
   color: var(--color-default);
   background-color: var(--bg-color-primary);
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.2); 
+  -webkit-box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.2); 
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -73,16 +85,14 @@ ul {
 `;
 
 ReactDOM.render(
-  <>
+  <Router>
     <Global />
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <Switch>
-          <Route path="/" component={App} />
-        </Switch>
-      </ConnectedRouter>
+      <Switch>
+        <Route path="/" component={App} />
+      </Switch>
     </Provider>
-  </>,
+  </Router>,
 
   document.getElementById('root'),
 );

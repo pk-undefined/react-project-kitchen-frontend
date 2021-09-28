@@ -1,10 +1,6 @@
-import agent from './agent';
 import {
   ASYNC_START,
   ASYNC_END,
-  LOGIN,
-  LOGOUT,
-  REGISTER,
 } from './constants/actionTypes';
 
 function isPromise(v) {
@@ -54,18 +50,17 @@ const promiseMiddleware = (store) => (next) => (action) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const localStorageMiddleware = (store) => (next) => (action) => {
-  if (action.type === REGISTER || action.type === LOGIN) {
-    if (!action.error) {
-      window.localStorage.setItem('jwt', action.payload.user.token);
-      agent.setToken(action.payload.user.token);
-    }
-  } else if (action.type === LOGOUT) {
-    window.localStorage.setItem('jwt', '');
-    agent.setToken(null);
-  }
+// const localStorageMiddleware = (store) => (next) => (action) => {
+//   if (action.type === REGISTER || action.type === LOGIN) {
+//     if (!action.error) {
+//       window.localStorage.setItem('jwt', action.payload.user.token);
+//       agent.setToken(action.payload.user.token);
+//     }
+//   } else if (action.type === LOGOUT) {
+//     window.localStorage.setItem('jwt', '');
+//     agent.setToken(null);
+//   }
+//   next(action);
+// };
 
-  next(action);
-};
-
-export { promiseMiddleware, localStorageMiddleware };
+export { promiseMiddleware };

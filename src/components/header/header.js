@@ -51,7 +51,7 @@ const Header = (props) => (
     <StyledContainer>
       <StyledLogo to="/">Проектная кухня</StyledLogo>
       <StyledNav>
-        <NavLink to="/" active>
+        <NavLink to="/">
           <HomeIcon className="navIcon" />
           {' '}
           Главная

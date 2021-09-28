@@ -12,7 +12,7 @@ const Fieldset = (props) => {
 
   return (
     <StyledFieldset>
-      <p>{fieldName}</p>
+      <p>{placeholder}</p>
       { !isTextarea ? (
         <InputComponent
           includesLoader={includesLoader}
@@ -20,6 +20,7 @@ const Fieldset = (props) => {
           type={type}
           placeholder={placeholder}
           value={fieldValue}
+          name={fieldName}
           onChange={handleInputChange}
         />
       )
@@ -27,8 +28,8 @@ const Fieldset = (props) => {
           <Textarea
             placeholder={placeholder}
             value={fieldValue}
+            name={fieldName}
             onChange={handleInputChange}
-            type={type}
           />
         )}
       <ListErrors errors={props.errors} />

@@ -15,19 +15,6 @@ import {
 const ArticlePreview = (props) => {
   const { article } = props;
 
-  // TODO: удалить когда починим добавление тэгов
-  const list = [
-    'Tag1',
-    'tag2',
-    'tag3',
-    'tag4',
-    'tag5',
-    'tag6',
-    'tag7',
-    'tag8',
-    'tag9',
-  ];
-
   return (
     <StyledArticlePreview>
       <ArticleImage
@@ -40,7 +27,7 @@ const ArticlePreview = (props) => {
         <ArticleText>{article.description}</ArticleText>
         <Text>Read more</Text>
         <TagList>
-          {list.map((tag, index) => (
+          {article.tagList.map((tag, index) => (
             <Tag key={tag + index}>{tag}</Tag>
           ))}
         </TagList>

@@ -1,30 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Fieldset from '../UI/fieldset/fieldset';
 import ButtonComponent from '../UI/button/button';
-import agent from '../../agent';
-import {
-  SETTINGS_SAVED,
-  SETTINGS_PAGE_UNLOADED,
-  LOGOUT,
-} from '../../constants/actionTypes';
 import {
   Container, Title, StyledLink, StyledForm,
 } from './common/styled-form';
-
-const mapStateToProps = (state) => ({
-  ...state.settings,
-  currentUser: state.common.currentUser,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onClickLogout: () => dispatch({ type: LOGOUT }),
-  onSubmitForm: (user) => dispatch({ type: SETTINGS_SAVED, payload: agent.Auth.save(user) }),
-  onUnload: () => dispatch({ type: SETTINGS_PAGE_UNLOADED }),
-});
+import { requestSaveUser } from '../../store/authSlice';
 
 const SettingsForm = (props) => {
-  const { currentUser, onSubmitForm, onClickLogout } = props;
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     image: '',
     username: '',
@@ -32,6 +16,8 @@ const SettingsForm = (props) => {
     email: '',
     password: '',
   });
+
+  const currentUser = useSelector((state) => state.auth.user);
 
   const updateState = (field) => (ev) => {
     setUser({ ...user, [field]: ev.target.value });
@@ -45,7 +31,7 @@ const SettingsForm = (props) => {
       delete userState.password;
     }
 
-    onSubmitForm(userState);
+    dispatch(requestSaveUser(userState));
   };
 
   useEffect(() => {
@@ -58,6 +44,10 @@ const SettingsForm = (props) => {
       });
     }
   }, [currentUser]);
+
+  const onClickLogout = () => {
+    localStorage.removeItem('Token');
+  };
 
   return (
     <Container>
@@ -163,4 +153,4 @@ const SettingsForm = (props) => {
 //   }
 // `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsForm);
+export default SettingsForm;

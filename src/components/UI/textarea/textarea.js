@@ -3,12 +3,12 @@ import { StyledTextArea } from './styled-textarea';
 
 const Textarea = (props) => {
   const {
-    type, placeholder, value, onChange,
+    placeholder, value, onChange, name,
   } = props;
   const error = false;
   return (
     <StyledTextArea
-      name={type}
+      name={name}
       placeholder={placeholder}
       onChange={onChange}
       error={error}

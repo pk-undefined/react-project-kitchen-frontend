@@ -27,6 +27,8 @@ const ArticleList = (props) => {
 
       <ListPagination
         pager={props.pager}
+        setPager={props.setPager}
+        countPage={props.countPage}
         articlesCount={props.articlesCount}
         currentPage={props.currentPage}
       />

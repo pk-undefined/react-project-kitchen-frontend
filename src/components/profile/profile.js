@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import agent from '../../agent';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import ArticleList from '../article-list/article-list';
-import {
-  FOLLOW_USER,
-  UNFOLLOW_USER,
-  PROFILE_PAGE_LOADED,
-  PROFILE_PAGE_UNLOADED,
-} from '../../constants/actionTypes';
 import {
   ProfilePage,
   TabsList,
@@ -24,80 +18,70 @@ import { Button } from '../UI/button/styled-button';
 import Tags from '../tags/tags';
 import icons from '../UI/icons/icons';
 
-const mapStateToProps = (state) => ({
-  ...state.articleList,
-  currentUser: state.common.currentUser,
-  profile: state.profile,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onFollow: (username) => dispatch({
-    type: FOLLOW_USER,
-    payload: agent.Profile.follow(username),
-  }),
-  onLoad: (payload) => dispatch({ type: PROFILE_PAGE_LOADED, payload }),
-  onUnfollow: (username) => dispatch({
-    type: UNFOLLOW_USER,
-    payload: agent.Profile.unfollow(username),
-  }),
-  onUnload: () => dispatch({ type: PROFILE_PAGE_UNLOADED }),
-});
+import { requestGetProfile } from '../../store/profileSlice';
+import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/articleSlice';
+import ProfileService from '../../services/profile-service';
 
 const Profile = (props) => {
-  const {
-    profile,
-    currentUser,
-    onLoad,
-    onUnload,
-    onFollow,
-    onUnfollow,
-    pager,
-    articles,
-    articlesCount,
-    currentPage,
-  } = props;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const currentUsername = history.location.pathname.split('/')[1].slice(1);
+  const { user } = useSelector((state) => state.auth);
+  const { profile } = useSelector((state) => state.profile);
+  const [page, setPage] = useState(0);
+  const countPage = 5;
+
+  console.log(1111);
 
   const { EditIcon, PlusIcon, MinusIcon } = icons;
   const [currentTab, setCurrentTab] = useState('all');
-  useEffect(() => {
-    onLoad(
-      Promise.all([
-        agent.Profile.get(props.match.params.username),
-        agent.Articles.byAuthor(props.match.params.username),
-      ]),
-    );
-    console.log('profffile', profile);
-    return () => {
-      onUnload();
-    };
-  }, []);
 
-  if (!profile) {
-    return null;
-  }
+  useEffect(() => {
+    dispatch(requestGetProfile(currentUsername));
+  }, [currentUsername]);
+
+  useEffect(() => {
+    if (props.url === 'favorites') {
+      dispatch(requestArticleFavoritedBy({ author: currentUsername, page }));
+    } else {
+      dispatch(requestArticleByAuthor({ author: currentUsername, page }));
+    }
+  }, [currentUsername, page]);
+
+  const {
+    articles,
+    articlesCount,
+    currentPage,
+  } = useSelector((state) => state.article.articleList);
 
   const toggleFollow = (ev) => {
     ev.preventDefault();
-    if (profile.following) {
-      onUnfollow(props.user.username);
+    if (props.user.following) {
+      ProfileService.unfollow(props.user.username);
     } else {
-      onFollow(profile.username);
+      ProfileService.follow(props.user.username);
     }
   };
+
   // TODO: добавить переключение через роутер
   const handleTabClick = (e) => {
     e.preventDefault();
     setCurrentTab(e.target.name);
-    console.log('TODO: добавить переключение через роутер');
+    // console.log('TODO: добавить переключение через роутер');
   };
 
-  const isUser = currentUser && profile.username === currentUser.username;
+  if (!profile) {
+    return <>Error</>;
+  }
+
+  const isUser = currentUsername && user.username === currentUsername;
 
   return (
     <ProfilePage>
       <UserProfile>
         <Avatar src={profile.image} alt={profile.username} />
         <Title>{profile.username}</Title>
+
         {isUser ? (
           <StyledLink to="/settings">
             <Button type="button" withoutMargin>
@@ -114,6 +98,7 @@ const Profile = (props) => {
           </Button>
         )}
       </UserProfile>
+
       <TabsList>
         <Tab
           to={`/@${profile.username}`}
@@ -132,13 +117,17 @@ const Profile = (props) => {
           Любимые посты
         </Tab>
       </TabsList>
+
       <Content>
         <ArticleList
-          pager={pager}
+          pager={page}
+          setPager={setPage}
+          countPage={countPage}
           articles={articles}
           articlesCount={articlesCount}
           state={currentPage}
         />
+
         <Sidebar>
           <Tags
             activeTag={props.tag}
@@ -151,4 +140,4 @@ const Profile = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Profile;
