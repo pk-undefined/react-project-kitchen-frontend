@@ -1,18 +1,15 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { connect } from 'react-redux';
-import agent from '../../agent';
-import { DELETE_ARTICLE } from '../../constants/actionTypes';
-
-const mapDispatchToProps = (dispatch) => ({
-  onClickDelete: (payload) => dispatch({ type: DELETE_ARTICLE, payload }),
-});
+import { useDispatch } from 'react-redux';
+import { requestArticleDeleted } from '../../store/articleSlice';
 
 const ArticleActions = (props) => {
+  const dispatch = useDispatch();
   const { article } = props;
   const del = () => {
-    props.onClickDelete(agent.Articles.del(article.slug));
+    dispatch(requestArticleDeleted(article.slug));
   };
+
   if (props.canModify) {
     return (
       <span>
@@ -23,13 +20,13 @@ const ArticleActions = (props) => {
         >
           <i className="ion-edit" />
           {' '}
-          Edit Article
+          Редактировать
         </Link>
 
         <button type="button" className="btn btn-outline-danger btn-sm" onClick={del}>
           <i className="ion-trash-a" />
           {' '}
-          Delete Article
+          Удалить
         </button>
 
       </span>
@@ -41,4 +38,4 @@ const ArticleActions = (props) => {
   );
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ArticleActions);
+export default ArticleActions;

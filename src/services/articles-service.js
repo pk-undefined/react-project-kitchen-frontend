@@ -29,8 +29,8 @@ export default class ArticlesService {
     return requestsAPI.get(`/articles?favorited=${encode(author)}&${limit(5, page)}`);
   }
 
-  static async feed() {
-    return requestsAPI.get('/articles/feed?limit=10&offset=0');
+  static async feed(page) {
+    return requestsAPI.get(`/articles/feed?${limit(10, page)}`);
   }
 
   static async get(slug) {

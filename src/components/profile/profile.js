@@ -23,7 +23,6 @@ const EditProfileSettings = (props) => {
 };
 
 const FollowUserButton = (props) => {
-  console.log(props);
   if (props.isUser) {
     return null;
   }
@@ -83,7 +82,6 @@ const Profile = (props) => {
   const {
     articles,
     articlesCount,
-    currentPage,
   } = useSelector((state) => state.article.articleList);
 
   if (!profile) {
@@ -148,7 +146,6 @@ const Profile = (props) => {
               countPage={countPage}
               articles={articles}
               articlesCount={articlesCount}
-              state={currentPage}
             />
           </div>
 

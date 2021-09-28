@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ArticleList from '../article-list/article-list';
 import { Tab, TabsList } from './styled-main-view';
@@ -11,52 +11,67 @@ import {
 } from '../../store/articleSlice';
 
 const YourFeedTab = (props) => {
-  const dispatch = useDispatch();
-  if (props.token) {
-    const clickHandler = (ev) => {
-      ev.preventDefault();
-      dispatch(setTab('feed'));
-      dispatch(setTag(''));
-      dispatch(requestArticleFeed());
-    };
-
-    return (
-      <li>
-        <Tab href="" active={props.tab === 'feed'} onClick={clickHandler}>
-          Ваша лента
-        </Tab>
-      </li>
-    );
-  }
-  return null;
-};
-
-const GlobalFeedTab = (props) => {
+  const {
+    tab,
+    setPage,
+    page,
+    token,
+  } = props;
   const dispatch = useDispatch();
   const clickHandler = (ev) => {
     ev.preventDefault();
+    setPage(0);
+    dispatch(setTab('feed'));
+    dispatch(setTag(''));
+    dispatch(requestArticleFeed());
+  };
+  useEffect(() => {
+    dispatch(requestArticleFeed(page));
+  }, [dispatch, page]);
+
+  if (!token) return null;
+
+  return (
+    <li>
+      <Tab href="" active={tab === 'feed'} onClick={clickHandler}>
+        Ваша лента
+      </Tab>
+    </li>
+  );
+};
+
+const GlobalFeedTab = ({ tab, setPage, page }) => {
+  const dispatch = useDispatch();
+  const clickHandler = (ev) => {
+    ev.preventDefault();
+    setPage(0);
     dispatch(setTab('all'));
     dispatch(setTag(''));
     dispatch(requestArticleAllPage());
   };
+  useEffect(() => {
+    dispatch(requestArticleAllPage(page));
+  }, [dispatch, page]);
+
   return (
     <li>
-      <Tab href="" active={props.tab === 'all'} onClick={clickHandler}>
+      <Tab href="" active={tab === 'all'} onClick={clickHandler}>
         Лента
       </Tab>
     </li>
   );
 };
 
-const TagFilterTab = ({ tag }) => {
+const TagFilterTab = ({ tag, setPage, page }) => {
   const dispatch = useDispatch();
   if (!tag) {
     return null;
   }
+  if (tag === '') setPage(0);
   dispatch(setTab(''));
   useEffect(() => {
-    dispatch(requestArticleByTag({ tag, page: 0 }));
-  }, [dispatch, tag]);
+    dispatch(requestArticleByTag({ tag, page }));
+  }, [dispatch, tag, page]);
 
   return (
     <li>
@@ -74,10 +89,11 @@ const MainView = () => {
   const {
     articles,
     articlesCount,
-    currentPage,
     tab,
     tag,
   } = useSelector((state) => state.article.articleList);
+  const [page, setPage] = useState(0);
+  const countPage = 10;
 
   useEffect(() => {
     if (isAuth) {
@@ -96,15 +112,17 @@ const MainView = () => {
   return (
     <>
       <TabsList>
-        <YourFeedTab tab={tab} token={isAuth} />
-        <GlobalFeedTab tab={tab} />
-        <TagFilterTab tag={tag} />
+        <YourFeedTab tab={tab} setPage={setPage} page={page} token={isAuth} />
+        <GlobalFeedTab tab={tab} setPage={setPage} page={page} />
+        <TagFilterTab tag={tag} setPage={setPage} page={page} />
       </TabsList>
 
       <ArticleList
+        pager={page}
+        setPager={setPage}
+        countPage={countPage}
         articles={articles}
         articlesCount={articlesCount}
-        state={currentPage}
       />
     </>
   );

@@ -4,8 +4,8 @@ import TagsService from '../services/tags-service';
 
 export const requestArticleAllPage = createAsyncThunk(
   'article/allPage',
-  async () => {
-    const response = await ArticleService.all();
+  async (page) => {
+    const response = await ArticleService.all(page);
     return response.data;
   },
 );
@@ -25,8 +25,8 @@ export const requestArticleByTag = createAsyncThunk(
 );
 export const requestArticleDeleted = createAsyncThunk(
   'article/deleted',
-  async (formData) => {
-    const response = await ArticleService.del(formData);
+  async (slug) => {
+    const response = await ArticleService.del(slug);
     return response.data;
   },
 );
@@ -46,8 +46,8 @@ export const requestArticleFavoritedBy = createAsyncThunk(
 );
 export const requestArticleFeed = createAsyncThunk(
   'article/feed',
-  async () => {
-    const response = await ArticleService.feed();
+  async (page) => {
+    const response = await ArticleService.feed(page);
     return response.data;
   },
 );
