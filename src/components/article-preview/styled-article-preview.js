@@ -21,7 +21,7 @@ export const ArticleImage = styled.img`
   object-position: center;
   grid-column: 1;
   grid-row: 1/5;
-  background: #292929;
+  // background: #292929;
 `;
 
 export const ArticleTitle = styled.h3`

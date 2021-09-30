@@ -56,9 +56,16 @@ const NewPostForm = () => {
   const submitForm = (ev) => {
     ev.preventDefault();
     if (currentArticle) {
-      dispatch(requestArticleUpdate(state));
+      let newTagList = '';
+      if (typeof state.tagList === 'string') {
+        newTagList = state.tagList.toLowerCase().replace(/\s+/g, '').split(',');
+      } else {
+        newTagList = state.tagList.join(',').toLowerCase().replace(/\s+/g, '').split(',');
+      }
+      dispatch(requestArticleUpdate({ ...state, tagList: newTagList }));
     } else {
-      dispatch(requestArticleCreate(state));
+      const newTagList = state.tagList.toLowerCase().replace(/\s+/g, '').split(',');
+      dispatch(requestArticleCreate({ ...state, tagList: newTagList }));
     }
   };
 

@@ -18,9 +18,8 @@ import { Button } from '../UI/button/styled-button';
 import Tags from '../tags/tags';
 import icons from '../UI/icons/icons';
 
-import { requestGetProfile } from '../../store/profileSlice';
+import { requestGetProfile, requestFollowUser, requestUnfollowUser } from '../../store/profileSlice';
 import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/articleSlice';
-import ProfileService from '../../services/profile-service';
 
 const Profile = (props) => {
   const dispatch = useDispatch();
@@ -30,8 +29,6 @@ const Profile = (props) => {
   const { profile } = useSelector((state) => state.profile);
   const [page, setPage] = useState(0);
   const countPage = 5;
-
-  console.log(1111);
 
   const { EditIcon, PlusIcon, MinusIcon } = icons;
   const [currentTab, setCurrentTab] = useState('all');
@@ -51,23 +48,20 @@ const Profile = (props) => {
   const {
     articles,
     articlesCount,
-    currentPage,
   } = useSelector((state) => state.article.articleList);
-
+  // console.log(profile);
   const toggleFollow = (ev) => {
     ev.preventDefault();
-    if (props.user.following) {
-      ProfileService.unfollow(props.user.username);
+    if (profile.following) {
+      dispatch(requestUnfollowUser(currentUsername));
     } else {
-      ProfileService.follow(props.user.username);
+      dispatch(requestFollowUser(currentUsername));
     }
   };
 
-  // TODO: добавить переключение через роутер
   const handleTabClick = (e) => {
     e.preventDefault();
     setCurrentTab(e.target.name);
-    // console.log('TODO: добавить переключение через роутер');
   };
 
   if (!profile) {
@@ -110,9 +104,9 @@ const Profile = (props) => {
         </Tab>
         <Tab
           to={`/@${profile.username}/favorites`}
-          active={currentTab === 'favourite'}
+          active={currentTab === 'favorites'}
           onClick={handleTabClick}
-          name="favourite"
+          name="favorites"
         >
           Любимые посты
         </Tab>
@@ -125,7 +119,6 @@ const Profile = (props) => {
           countPage={countPage}
           articles={articles}
           articlesCount={articlesCount}
-          state={currentPage}
         />
 
         <Sidebar>

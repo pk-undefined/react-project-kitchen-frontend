@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const descLorem = 'Описание нормальной статьи про жизнь молодую';
-
 const ArticleInner = (props) => {
+  const { className } = props;
   // необходимые пропсы articleTitle, body, articleDescription, articleImg
-  const { body, title, className } = props;
+  const {
+    body,
+    title,
+    description,
+    image,
+  } = props.article;
 
   return (
     <article className={className}>
@@ -13,14 +17,18 @@ const ArticleInner = (props) => {
       <h1 className="Post__header">{title}</h1>
       <p className="Post__description">
         {/* {Описание сюда} */}
-        {descLorem}
+        {description}
       </p>
       {/* {cюда прокидываем пропс url картинки и альт из тайтла} */}
-      <img
-        className="Post__image"
-        src="https://images.daznservices.com/di/library/sporting_news/f9/a1/img-academy-ftr-img-051220jpg_itu9cfptrglm1rucdqzbuo2f0.jpg"
-        alt="Article Title"
-      />
+      {image && (
+        <div className="Block__image">
+          <img
+            className="Post__image"
+            src={image}
+            alt="Article Title"
+          />
+        </div>
+      )}
       {
         // распаршиваем боди на параграфы моднейшие
         body.split(/\n/)
@@ -50,11 +58,16 @@ const Post = styled(ArticleInner)`
     margin-bottom: 32px;
   }
 
+  .Block__image{
+    width: 100%;
+    text-align: center;
+  }
+
   .Post__image {
     object-fit: cover;
     margin-bottom: 32px;
-    width: 100%;
-    max-height: 432px;
+    // width: 100%;
+    max-height: 350px;
   }
 
   .Post__paragraph {

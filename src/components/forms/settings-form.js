@@ -5,7 +5,7 @@ import ButtonComponent from '../UI/button/button';
 import {
   Container, Title, StyledLink, StyledForm,
 } from './common/styled-form';
-import { requestSaveUser } from '../../store/authSlice';
+import { requestSaveUser, logout } from '../../store/authSlice';
 
 const SettingsForm = (props) => {
   const dispatch = useDispatch();
@@ -46,6 +46,7 @@ const SettingsForm = (props) => {
   }, [currentUser]);
 
   const onClickLogout = () => {
+    dispatch(logout());
     localStorage.removeItem('Token');
   };
 

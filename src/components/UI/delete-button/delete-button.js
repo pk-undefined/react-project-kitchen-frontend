@@ -1,22 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import agent from '../../../agent';
-import { DELETE_COMMENT } from '../../../constants/actionTypes';
+import { useDispatch } from 'react-redux';
 import icons from '../icons/icons';
 import { StyledDeleteButton } from './styled-delete-button';
-
-const mapDispatchToProps = (dispatch) => ({
-  onClick: (payload, commentId) => dispatch({ type: DELETE_COMMENT, payload, commentId }),
-});
+import { requestArticleDeleteComment, delComment } from '../../../store/articleSlice';
 
 const DeleteButton = (props) => {
+  const dispatch = useDispatch();
   const { DeleteIcon } = icons;
+  const { slug, commentId, show } = props;
   const del = () => {
-    const payload = agent.Comments.delete(props.slug, props.commentId);
-    props.onClick(payload, props.commentId);
+    dispatch(requestArticleDeleteComment({ slug, commentId }));
+    dispatch(delComment(commentId));
   };
 
-  if (props.show) {
+  if (show) {
     return (
       <StyledDeleteButton onClick={del}>
         <DeleteIcon />
@@ -26,4 +23,4 @@ const DeleteButton = (props) => {
   return null;
 };
 
-export default connect(() => ({}), mapDispatchToProps)(DeleteButton);
+export default DeleteButton;
