@@ -201,7 +201,7 @@ const articleSlice = createSlice({
     [requestArticleCreateComment.rejected.toString()]: (state) => { state.isError = true; },
 
     [requestArticleFavorite.fulfilled.toString()]: (state, action) => {
-      state.article.article.favorited = action.payload.article.favorited;
+      state.article.article = action.payload.article;
       state.articleList.articles = state.articleList.articles.map((el) => (
         el.slug !== action.payload.article.slug ? el : action.payload.article
       ));
@@ -209,7 +209,7 @@ const articleSlice = createSlice({
     },
     [requestArticleFavorite.rejected.toString()]: (state) => { state.isError = true; },
     [requestArticleUnfavorite.fulfilled.toString()]: (state, action) => {
-      state.article.article.favorited = action.payload.article.favorited;
+      state.article.article = action.payload.article;
       state.articleList.articles = state.articleList.articles.map((el) => (
         el.slug !== action.payload.article.slug ? el : action.payload.article
       ));
