@@ -1,19 +1,20 @@
 import React from 'react';
 import ArticlePreview from '../article-preview/article-preview';
 import ListPagination from '../list-pagination/list-pagination';
+import { EmptyArticleList } from './styled-article-list';
 
 const ArticleList = (props) => {
   if (!props.articles) {
     return (
-      <div className="article-preview">Loading...</div>
+      <EmptyArticleList>Загрузка...</EmptyArticleList>
     );
   }
 
   if (props.articles.length === 0) {
     return (
-      <div className="article-preview">
-        No articles are here... yet.
-      </div>
+      <EmptyArticleList>
+        Здесь пока нет постов
+      </EmptyArticleList>
     );
   }
 
