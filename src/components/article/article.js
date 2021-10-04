@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ArticleMeta from '../article-meta/article-meta';
 import CommentContainer from '../comment-container/comment-container';
-import { StyledArticle } from './styled-article';
+import {
+  StyledArticle, StyledSubtitle, TagItem, TagList,
+} from './styled-article';
 import Post from '../post/post';
 import { requestArticleGet, requestArticleForArticle } from '../../store/articleSlice';
 
@@ -38,18 +40,18 @@ const Article = () => {
         <ArticleMeta article={article} canModify={canModify} />
         <Post article={article} />
 
-        <ul className="tag-list">
+        {tagList && tagList.length && <StyledSubtitle>Тэги:</StyledSubtitle>}
+        <TagList>
           {
                 tagList?.map((tag) => (
-                  <li
-                    className="tag-default tag-pill tag-outline"
+                  <TagItem
                     key={tag}
                   >
                     {tag}
-                  </li>
+                  </TagItem>
                 ))
               }
-        </ul>
+        </TagList>
 
         <CommentContainer
           comments={comments}

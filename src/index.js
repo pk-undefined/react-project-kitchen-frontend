@@ -9,6 +9,7 @@ import App from './components/app/App';
 import store from './store/index';
 
 import { fontFaces } from './fonts/fonts';
+import './vendor/normalize.css';
 
 const Global = createGlobalStyle`
 
@@ -73,6 +74,16 @@ a:hover {
     color: var(--color-default);
     text-decoration: none;
 } 
+
+fieldset {
+  border-width: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding-block-start: 0;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+  padding-block-end: 0;
+}
 
 li {
   list-style-type: none;

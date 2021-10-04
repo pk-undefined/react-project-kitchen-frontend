@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyledListItem, StyledListPagination } from './styled-list-pagination';
 
 const ListPagination = (props) => {
   if (props.articlesCount <= props.countPage) {
@@ -12,7 +13,7 @@ const ListPagination = (props) => {
 
   return (
     <nav>
-      <ul className="pagination">
+      <StyledListPagination>
 
         {
           range.map((v) => {
@@ -22,21 +23,21 @@ const ListPagination = (props) => {
               props.setPager(v);
             };
             return (
-              <li
+              <StyledListItem
                 aria-hidden
-                className={isCurrent ? 'page-item active' : 'page-item'}
+                isActive={isCurrent}
                 onClick={onClick}
                 key={v.toString()}
               >
 
-                <a className="page-link" href="#">{v + 1}</a>
+                <a href="#">{v + 1}</a>
 
-              </li>
+              </StyledListItem>
             );
           })
         }
 
-      </ul>
+      </StyledListPagination>
     </nav>
   );
 };

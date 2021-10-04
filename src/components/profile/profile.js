@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import ArticleList from '../article-list/article-list';
 import {
   ProfilePage,
@@ -24,6 +24,7 @@ import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/a
 const Profile = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { url } = useRouteMatch();
   const currentUsername = history.location.pathname.split('/')[1].slice(1);
   const { user } = useSelector((state) => state.auth);
   const { profile } = useSelector((state) => state.profile);
@@ -31,7 +32,6 @@ const Profile = (props) => {
   const countPage = 5;
 
   const { EditIcon, PlusIcon, MinusIcon } = icons;
-  const [currentTab, setCurrentTab] = useState('all');
 
   useEffect(() => {
     dispatch(requestGetProfile(currentUsername));
@@ -57,11 +57,6 @@ const Profile = (props) => {
     } else {
       dispatch(requestFollowUser(currentUsername));
     }
-  };
-
-  const handleTabClick = (e) => {
-    e.preventDefault();
-    setCurrentTab(e.target.name);
   };
 
   if (!profile) {
@@ -96,16 +91,14 @@ const Profile = (props) => {
       <TabsList>
         <Tab
           to={`/@${profile.username}`}
-          active={currentTab === 'all'}
-          onClick={handleTabClick}
+          active={!url.match('/favorites')}
           name="all"
         >
           Ваши посты
         </Tab>
         <Tab
           to={`/@${profile.username}/favorites`}
-          active={currentTab === 'favorites'}
-          onClick={handleTabClick}
+          active={url.match('/favorites')}
           name="favorites"
         >
           Любимые посты
