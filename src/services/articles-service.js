@@ -29,8 +29,8 @@ export default class ArticlesService {
     return requestsAPI.get(`/articles?favorited=${encode(author)}&${limit(5, page)}`);
   }
 
-  static async feed() {
-    return requestsAPI.get('/articles/feed?limit=10&offset=0');
+  static async feed(page) {
+    return requestsAPI.get(`/articles/feed?${limit(10, page)}`);
   }
 
   static async get(slug) {
@@ -50,11 +50,10 @@ export default class ArticlesService {
   }
 
   static async createComment(slug, comment) {
-    console.log(comment);
     return requestsAPI.post(`/articles/${slug}/comments`, { comment: { body: comment } });
   }
 
-  static async deleteComment({ slug, commentId }) {
+  static async deleteComment(slug, commentId) {
     return requestsAPI.delete(`/articles/${slug}/comments/${commentId}`);
   }
 

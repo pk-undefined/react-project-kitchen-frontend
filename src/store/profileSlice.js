@@ -2,9 +2,23 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ProfileService from '../services/profile-service';
 
 export const requestGetProfile = createAsyncThunk(
-  'auth/getProfile',
+  'profile/getProfile',
   async (formData) => {
     const response = await ProfileService.get(formData);
+    return response.data;
+  },
+);
+export const requestFollowUser = createAsyncThunk(
+  'profile/follow',
+  async (currentUsername) => {
+    const response = await ProfileService.follow(currentUsername);
+    return response.data;
+  },
+);
+export const requestUnfollowUser = createAsyncThunk(
+  'profile/unfollow',
+  async (currentUsername) => {
+    const response = await ProfileService.unfollow(currentUsername);
     return response.data;
   },
 );
@@ -30,6 +44,12 @@ const profileSlice = createSlice({
       state.isError = false;
     },
     [requestGetProfile.rejected.toString()]: (state) => { state.isError = true; },
+    [requestFollowUser.fulfilled.toString()]: (state, action) => {
+      state.profile = action.payload.profile;
+    },
+    [requestUnfollowUser.fulfilled.toString()]: (state, action) => {
+      state.profile = action.payload.profile;
+    },
   },
 });
 

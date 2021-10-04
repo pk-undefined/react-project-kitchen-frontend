@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledTextArea = styled.textarea`
-  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
   min-height: ${(props) => (props.name === 'commentForm' ? '120px' : '136px')};
   font-size: 16px;
   line-height: 40px;

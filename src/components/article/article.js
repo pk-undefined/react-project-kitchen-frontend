@@ -20,8 +20,10 @@ const Article = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const { article, comments } = useSelector((state) => state.article.article);
 
+  // Бывает вылетает баг что нет свойства, хз что за фигня
+  // Возможно что хук срабатывает позже чет загружается страница, но такого быть не должно
   const {
-    body, author, title, tagList,
+    author, tagList,
   } = article;
 
   const currentUserUsername = currentUser?.username;
@@ -34,7 +36,7 @@ const Article = () => {
     isArticle && (
       <StyledArticle>
         <ArticleMeta article={article} canModify={canModify} />
-        <Post body={body} title={title} />
+        <Post article={article} />
 
         <ul className="tag-list">
           {

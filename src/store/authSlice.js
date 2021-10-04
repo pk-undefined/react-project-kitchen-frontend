@@ -43,6 +43,10 @@ const authSlice = createSlice({
     updateFieldAuth: (state, action) => {
       state.user.action.key = action.email;
     },
+    logout: (state) => {
+      state.user = {};
+      state.isAuth = false;
+    },
   },
   extraReducers: {
     [requestRegister.fulfilled.toString()]: (state, action) => {
@@ -76,5 +80,6 @@ const authSlice = createSlice({
 
 export const {
   updateFieldAuth,
+  logout,
 } = authSlice.actions;
 export default authSlice.reducer;

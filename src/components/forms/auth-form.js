@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import ButtonComponent from '../UI/button/button';
 import {
   Container, StyledForm, Title, RegLink,
@@ -25,6 +25,8 @@ const AuthForm = (props) => {
       }));
     }
   };
+  const { isAuth } = useSelector((state) => state.auth);
+  if (isAuth) return <Redirect to="/" />;
 
   return (
     <Container>

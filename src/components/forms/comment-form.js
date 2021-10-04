@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Textarea from '../UI/textarea/textarea';
 import UserInfo from '../user-info/user-info';
 import { InfoContainer, StyledCommentForm } from './common/styled-form';
 import Button from '../UI/button/button';
+import { requestArticleCreateComment } from '../../store/articleSlice';
 
 const CommentForm = (props) => {
+  const dispatch = useDispatch();
   const { currentUser } = props;
   const [body, setBody] = useState('');
   const handleChange = (e) => {
@@ -13,7 +16,8 @@ const CommentForm = (props) => {
 
   const sendComment = (e) => {
     e.preventDefault();
-    console.log('TODO: починить отправку комментариев');
+    setBody('');
+    dispatch(requestArticleCreateComment({ slug: props.slug, comment: body }));
   };
 
   return (

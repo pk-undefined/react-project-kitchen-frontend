@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import like from '../../../images/like.svg';
 import likeActive from '../../../images/like-active.svg';
-import { requestArticleFavorite, requestArticleUnfavorite } from '../../../store/articleSlice';
+import {
+  requestArticleFavorite,
+  requestArticleUnfavorite,
+} from '../../../store/articleSlice';
 
 // const mapDispatchToProps = (dispatch) => ({
 //   favorite: (slug) => dispatch({
@@ -22,7 +25,6 @@ const Like = (props) => {
 
   const handleClick = (ev) => {
     ev.preventDefault();
-    console.log(article.favorited);
     if (article.favorited) {
       dispatch(requestArticleUnfavorite(article.slug));
     } else {

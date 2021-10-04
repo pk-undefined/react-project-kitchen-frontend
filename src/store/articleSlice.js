@@ -4,8 +4,8 @@ import TagsService from '../services/tags-service';
 
 export const requestArticleAllPage = createAsyncThunk(
   'article/allPage',
-  async () => {
-    const response = await ArticleService.all();
+  async (page) => {
+    const response = await ArticleService.all(page);
     return response.data;
   },
 );
@@ -25,8 +25,8 @@ export const requestArticleByTag = createAsyncThunk(
 );
 export const requestArticleDeleted = createAsyncThunk(
   'article/deleted',
-  async (formData) => {
-    const response = await ArticleService.del(formData);
+  async (slug) => {
+    const response = await ArticleService.del(slug);
     return response.data;
   },
 );
@@ -46,8 +46,8 @@ export const requestArticleFavoritedBy = createAsyncThunk(
 );
 export const requestArticleFeed = createAsyncThunk(
   'article/feed',
-  async () => {
-    const response = await ArticleService.feed();
+  async (page) => {
+    const response = await ArticleService.feed(page);
     return response.data;
   },
 );
@@ -88,8 +88,8 @@ export const requestArticleCreateComment = createAsyncThunk(
 );
 export const requestArticleDeleteComment = createAsyncThunk(
   'article/deleteComment',
-  async (formData) => {
-    const response = await ArticleService.deleteComment(formData);
+  async ({ slug, commentId }) => {
+    const response = await ArticleService.deleteComment(slug, commentId);
     return response.data;
   },
 );
@@ -133,6 +133,9 @@ const articleSlice = createSlice({
     },
     setTag: (state, action) => {
       state.articleList.tag = action.payload;
+    },
+    delComment: (state, action) => {
+      state.article.comments = state.article.comments.filter((el) => (el.id !== action.payload));
     },
   },
   extraReducers: {
@@ -191,23 +194,28 @@ const articleSlice = createSlice({
     [requestArticleForArticle.rejected.toString()]: (state) => { state.isError = true; },
 
     [requestArticleCreateComment.fulfilled.toString()]: (state, action) => {
-      console.log(action.payload.comment);
+      const { comment } = action.payload;
+      state.article.comments.unshift(comment);
       state.isError = false;
     },
     [requestArticleCreateComment.rejected.toString()]: (state) => { state.isError = true; },
 
-    // [requestArticleFavorite.fulfilled.toString()]: (state, action) => {
-    //   state.articleList.articles = action.payload.articles;
-    //   state.articleList.articlesCount = action.payload.articlesCount;
-    //   state.isError = false;
-    // },
-    // [requestArticleFavorite.rejected.toString()]: (state) => { state.isError = true; },
-    // [requestArticleUnfavorite.fulfilled.toString()]: (state, action) => {
-    //   state.articleList.articles = action.payload.articles;
-    //   state.articleList.articlesCount = action.payload.articlesCount;
-    //   state.isError = false;
-    // },
-    // [requestArticleUnfavorite.rejected.toString()]: (state) => { state.isError = true; },
+    [requestArticleFavorite.fulfilled.toString()]: (state, action) => {
+      state.article.article = action.payload.article;
+      state.articleList.articles = state.articleList.articles.map((el) => (
+        el.slug !== action.payload.article.slug ? el : action.payload.article
+      ));
+      state.isError = false;
+    },
+    [requestArticleFavorite.rejected.toString()]: (state) => { state.isError = true; },
+    [requestArticleUnfavorite.fulfilled.toString()]: (state, action) => {
+      state.article.article = action.payload.article;
+      state.articleList.articles = state.articleList.articles.map((el) => (
+        el.slug !== action.payload.article.slug ? el : action.payload.article
+      ));
+      state.isError = false;
+    },
+    [requestArticleUnfavorite.rejected.toString()]: (state) => { state.isError = true; },
 
     [requestArticleGetAllTags.fulfilled.toString()]: (state, action) => {
       state.articleList.tags = action.payload.tags;
@@ -220,5 +228,6 @@ const articleSlice = createSlice({
 export const {
   setTab,
   setTag,
+  delComment,
 } = articleSlice.actions;
 export default articleSlice.reducer;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Header from '../header/header';
 import Article from '../article/article';
 import Home from '../home/home';
@@ -12,23 +12,8 @@ import SettingsForm from '../forms/settings-form';
 import NewPostForm from '../forms/new-post-form';
 import { requestCurrentUser } from '../../store/authSlice';
 
-// const mapStateToProps = (state) => ({
-//   appLoaded: state.common.appLoaded,
-//   appName: state.common.appName,
-//   currentUser: state.common.currentUser,
-//   redirectTo: state.common.redirectTo,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   onLoad: (payload, token) => dispatch({
-//     type: APP_LOAD, payload, token, skipTracking: true,
-//   }),
-//   onRedirect: () => dispatch({ type: REDIRECT }),
-// });
-
-const App = (props) => {
+const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (localStorage.getItem('Token')) dispatch(requestCurrentUser());
@@ -36,10 +21,7 @@ const App = (props) => {
 
   return (
     <div>
-      <Header
-        appName={props.appName}
-        currentUser={Object.keys(user).length === 0 ? null : user}
-      />
+      <Header />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
