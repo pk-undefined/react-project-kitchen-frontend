@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import Fieldset from '../UI/fieldset/fieldset';
 import ButtonComponent from '../UI/button/button';
 import {
@@ -67,6 +67,7 @@ const NewPostForm = () => {
       const newTagList = state.tagList.toLowerCase().replace(/\s+/g, '').split(',');
       dispatch(requestArticleCreate({ ...state, tagList: newTagList }));
     }
+    return <Redirect to={`/article/${article?.slug}`} />;
   };
 
   return (

@@ -65,11 +65,12 @@ const GlobalFeedTab = ({ tab, setPage, page }) => {
 const TagFilterTab = ({ tag, setPage, page }) => {
   const dispatch = useDispatch();
   if (!tag) return null;
-  if (tag === '') setPage(0);
   dispatch(setTab(''));
+  setPage(0);
   useEffect(() => {
     dispatch(requestArticleByTag({ tag, page }));
   }, [dispatch, tag, page]);
+  // useEffect(() => { setPage(0); }, [tag]);
 
   return (
     <li>
