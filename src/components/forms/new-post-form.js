@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Fieldset from '../UI/fieldset/fieldset';
 import ButtonComponent from '../UI/button/button';
 import {
@@ -9,6 +10,7 @@ import {
 import { requestArticleCreate, requestArticleUpdate, requestArticleGet } from '../../store/articleSlice';
 
 const NewPostForm = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const currentArticle = history.location.pathname.slice(8);
@@ -72,13 +74,13 @@ const NewPostForm = () => {
   return (
     <Container>
       <StyledForm onSubmit={submitForm}>
-        <Title>Новая запись</Title>
+        <Title>{t('NewEntry.title')}</Title>
         <fieldset>
           <Fieldset
             type="text"
             fieldName="title"
             fieldValue={state.title}
-            placeholder="Название статьи"
+            placeholder={t('NewEntry.titleOfTheArticle')}
             handleInputChange={onChange}
             // errors={props.errors}
           />
@@ -86,7 +88,7 @@ const NewPostForm = () => {
             type="text"
             fieldName="description"
             fieldValue={state.description}
-            placeholder="О чем статья"
+            placeholder={t('NewEntry.whatIsTheArticleAbout')}
             handleInputChange={onChange}
             // errors={props.errors}
           />
@@ -95,14 +97,14 @@ const NewPostForm = () => {
             type="url"
             fieldName="image"
             fieldValue={state.image}
-            placeholder="Изображение(опционально)"
+            placeholder={t('NewEntry.imageOptional')}
             handleInputChange={onChange}
             // errors={props.errors}
           />
           <Fieldset
             isTextarea
             fieldName="body"
-            placeholder="Содержание"
+            placeholder={t('NewEntry.content')}
             fieldValue={state.body}
             handleInputChange={onChange}
             // errors={props.errors}
@@ -111,13 +113,13 @@ const NewPostForm = () => {
             type="text"
             fieldName="tagList"
             fieldValue={state.tagList}
-            placeholder="Тэги (через запятую)"
+            placeholder={t('NewEntry.tagsSeparatedByCommas')}
             handleInputChange={onChange}
             // onKeyUp={watchForEnter}
             // errors={props.errors}
           />
         </fieldset>
-        <ButtonComponent>{currentArticle ? 'Сохранить' : 'Опубликовать'}</ButtonComponent>
+        <ButtonComponent>{currentArticle ? t('save') : t('NewEntry.toPublish')}</ButtonComponent>
       </StyledForm>
     </Container>
   );

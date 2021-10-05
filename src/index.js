@@ -1,15 +1,13 @@
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
 import { createGlobalStyle } from 'styled-components';
 import App from './components/app/App';
-
-import store from './store/index';
-
 import { fontFaces } from './fonts/fonts';
 import './vendor/normalize.css';
+import './i18n/i18n';
+import store from './store/index';
 
 const Global = createGlobalStyle`
 
@@ -70,10 +68,10 @@ h2 {
 
 a,
 a:focus,
-a:hover { 
+a:hover {
     color: var(--color-default);
     text-decoration: none;
-} 
+}
 
 fieldset {
   border-width: 0;
@@ -96,14 +94,18 @@ ul {
 `;
 
 ReactDOM.render(
-  <Router>
-    <Global />
-    <Provider store={store}>
-      <Switch>
-        <Route path="/" component={App} />
-      </Switch>
-    </Provider>
-  </Router>,
+  <React.StrictMode>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Router>
+        <Global />
+        <Provider store={store}>
+          <Switch>
+            <Route path="/" component={App} />
+          </Switch>
+        </Provider>
+      </Router>
+    </Suspense>
+  </React.StrictMode>,
 
   document.getElementById('root'),
 );

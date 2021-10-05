@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Fieldset from '../UI/fieldset/fieldset';
 import AuthForm from './auth-form';
 
 const Login = (props) => {
+  const { t } = useTranslation();
   const [state, setState] = useState({
     email: '',
     password: '',
@@ -18,10 +20,10 @@ const Login = (props) => {
   };
 
   return (
-    <AuthForm data={state} title="Войти" linkText="Хотите создать аккаунт?" link="register" formType="LOGIN">
+    <AuthForm data={state} title="Войти" linkText={t('doYouWantToCreateAnAccount')} link="register" formType="LOGIN">
       <fieldset>
         <Fieldset type="email" fieldName="email" fieldValue={state.email} placeholder="E-mail" handleInputChange={onChange} errors={props.errors} />
-        <Fieldset type="password" fieldName="password" fieldValue={state.password} placeholder="Пароль" handleInputChange={onChange} errors={props.errors} passwordField />
+        <Fieldset type="password" fieldName="password" fieldValue={state.password} placeholder={t('password')} handleInputChange={onChange} errors={props.errors} passwordField />
       </fieldset>
     </AuthForm>
   );
