@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ArticleList from '../article-list/article-list';
 import { Tab, TabsList } from './styled-main-view';
 import {
@@ -11,6 +12,7 @@ import {
 } from '../../store/articleSlice';
 
 const YourFeedTab = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   if (props.token) {
     const clickHandler = (ev) => {
@@ -23,7 +25,7 @@ const YourFeedTab = (props) => {
     return (
       <li>
         <Tab to="" active={props.tab === 'feed'} onClick={clickHandler}>
-          Ваша лента
+          {t('yourFeed')}
         </Tab>
       </li>
     );
@@ -32,6 +34,7 @@ const YourFeedTab = (props) => {
 };
 
 const GlobalFeedTab = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const clickHandler = (ev) => {
     ev.preventDefault();
@@ -42,7 +45,7 @@ const GlobalFeedTab = (props) => {
   return (
     <li>
       <Tab to="" active={props.tab === 'all'} onClick={clickHandler}>
-        Лента
+        {t('feed')}
       </Tab>
     </li>
   );

@@ -1,8 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import icons from '../UI/icons/icons';
+import { TogglerLanguage } from './toggler-language/toggler-language';
 import {
-  StyledLink, StyledHeader, StyledContainer, StyledLogo, StyledNav,
+  StyledContainer,
+  StyledHeader,
+  StyledLink,
+  StyledLogo,
+  StyledNav,
 } from './styled-header';
+
+const i18nElement = 'header';
 
 const {
   HomeIcon, SettingsIcon, EditIcon, Avatar, LogInIcon,
@@ -14,56 +22,67 @@ const NavLink = (props) => (
   </li>
 );
 
-const LoggedOutView = () => (
-  <>
+const LoggedOutView = () => {
+  const { t } = useTranslation();
+
+  return (
     <NavLink to="/login">
       <LogInIcon className="navIcon" />
       {' '}
-      Войти
+      {t(`${i18nElement}.SignIn`)}
     </NavLink>
-  </>
-);
+  );
+};
 
-const LoggedInView = (props) => (
-  <>
-    <NavLink to="/editor">
-      <EditIcon className="navIcon" />
-      {' '}
-      Новая запись
-    </NavLink>
+const LoggedInView = (props) => {
+  const { t } = useTranslation();
 
-    <NavLink to="/settings">
-      <SettingsIcon className="navIcon" />
-      {' '}
-      Настройки
-    </NavLink>
+  return (
+    <>
+      <NavLink to="/editor">
+        <EditIcon className="navIcon" />
+        {' '}
+        {t(`${i18nElement}.NewEntry`)}
+      </NavLink>
 
-    <NavLink to={`/@${props.currentUser.username}`}>
-      <Avatar className="avatar" />
-      {' '}
-      {props.currentUser.username}
-    </NavLink>
-  </>
-);
+      <NavLink to="/settings">
+        <SettingsIcon className="navIcon" />
+        {' '}
+        {t(`${i18nElement}.Settings`)}
+      </NavLink>
 
-const Header = (props) => (
-  <StyledHeader>
-    <StyledContainer>
-      <StyledLogo to="/">Проектная кухня</StyledLogo>
-      <StyledNav>
-        <NavLink to="/">
-          <HomeIcon className="navIcon" />
-          {' '}
-          Главная
-        </NavLink>
-        {props.currentUser ? (
-          <LoggedInView currentUser={props.currentUser} />
-        ) : (
-          <LoggedOutView currentUser={props.currentUser} />
-        )}
-      </StyledNav>
-    </StyledContainer>
-  </StyledHeader>
-);
+      <NavLink to={`/@${props.currentUser.username}`}>
+        <Avatar className="avatar" />
+        {' '}
+        {props.currentUser.username}
+      </NavLink>
+    </>
+  );
+};
+
+const Header = (props) => {
+  const { t } = useTranslation();
+
+  return (
+    <StyledHeader>
+      <StyledContainer>
+        <StyledLogo to="/">{t('projectName')}</StyledLogo>
+        <StyledNav>
+          <TogglerLanguage />
+          <NavLink to="/">
+            <HomeIcon className="navIcon" />
+            {' '}
+            {t(`${i18nElement}.mainPageName`)}
+          </NavLink>
+          {props.currentUser ? (
+            <LoggedInView currentUser={props.currentUser} />
+          ) : (
+            <LoggedOutView currentUser={props.currentUser} />
+          )}
+        </StyledNav>
+      </StyledContainer>
+    </StyledHeader>
+  );
+};
 
 export default Header;

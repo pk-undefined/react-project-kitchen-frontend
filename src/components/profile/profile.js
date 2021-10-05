@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ArticleList from '../article-list/article-list';
 import {
   ProfilePage,
@@ -24,14 +25,13 @@ import ProfileService from '../../services/profile-service';
 
 const Profile = (props) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const history = useHistory();
   const currentUsername = history.location.pathname.split('/')[1].slice(1);
   const { user } = useSelector((state) => state.auth);
   const { profile } = useSelector((state) => state.profile);
   const [page, setPage] = useState(0);
   const countPage = 5;
-
-  console.log(1111);
 
   const { EditIcon, PlusIcon, MinusIcon } = icons;
   const [currentTab, setCurrentTab] = useState('all');
@@ -86,14 +86,14 @@ const Profile = (props) => {
           <StyledLink to="/settings">
             <Button type="button" withoutMargin>
               <EditIcon />
-              Редактировать профиль
+              {t('profilePage.editProfile')}
             </Button>
           </StyledLink>
         ) : (
           <Button type="button" onClick={toggleFollow}>
             {profile && profile.following ? <MinusIcon /> : <PlusIcon />}
             <ButtonText>
-              {profile && profile.following ? 'Отписаться' : 'Подписаться'}
+              {profile && profile.following ? t('profilePage.unsubscribe') : t('profilePage.subscribe')}
             </ButtonText>
           </Button>
         )}
@@ -106,7 +106,7 @@ const Profile = (props) => {
           onClick={handleTabClick}
           name="all"
         >
-          Ваши посты
+          {t('profilePage.yourPosts')}
         </Tab>
         <Tab
           to={`/@${profile.username}/favorites`}
@@ -114,7 +114,7 @@ const Profile = (props) => {
           onClick={handleTabClick}
           name="favourite"
         >
-          Любимые посты
+          {t('profilePage.editProfile')}
         </Tab>
       </TabsList>
 

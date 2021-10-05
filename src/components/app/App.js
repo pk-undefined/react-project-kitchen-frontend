@@ -11,6 +11,7 @@ import Register from '../forms/register';
 import SettingsForm from '../forms/settings-form';
 import NewPostForm from '../forms/new-post-form';
 import { requestCurrentUser } from '../../store/authSlice';
+import { useInitialI18nFromCookie } from '../../i18n/hooks/use-initial-i18n-from-cookie';
 
 // const mapStateToProps = (state) => ({
 //   appLoaded: state.common.appLoaded,
@@ -29,6 +30,8 @@ import { requestCurrentUser } from '../../store/authSlice';
 const App = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+
+  useInitialI18nFromCookie();
 
   useEffect(() => {
     if (localStorage.getItem('Token')) dispatch(requestCurrentUser());
