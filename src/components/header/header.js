@@ -7,22 +7,16 @@ import { TogglerLanguage } from './toggler-language/toggler-language';
 import {
   StyledContainer,
   StyledHeader,
-  StyledLink,
   StyledLogo,
   StyledNav,
 } from './styled-header';
+import { NavLink } from './nav-link/nav-link';
 
 const i18nElement = 'header';
 
 const {
   HomeIcon, SettingsIcon, EditIcon, LogInIcon,
 } = icons;
-
-const NavLink = (props) => (
-  <li>
-    <StyledLink {...props}>{props.children}</StyledLink>
-  </li>
-);
 
 const LoggedOutView = () => {
   const { t } = useTranslation();
