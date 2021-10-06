@@ -8,6 +8,7 @@ import { fontFaces } from './fonts/fonts';
 import './vendor/normalize.css';
 import './i18n/i18n';
 import store from './store/index';
+import Loader from './components/common/loader/loader';
 
 const Global = createGlobalStyle`
 
@@ -95,7 +96,7 @@ ul {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <Router>
         <Global />
         <Provider store={store}>
