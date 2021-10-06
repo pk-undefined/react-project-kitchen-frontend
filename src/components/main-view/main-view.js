@@ -10,6 +10,7 @@ import {
   requestArticleFeed,
   requestArticleByTag,
 } from '../../store/articleSlice';
+import { LOCAL_STORE_TOKEN_NAME } from '../../constants/consts';
 
 const YourFeedTab = (props) => {
   const {
@@ -86,7 +87,7 @@ const TagFilterTab = ({ tag, setPage, page }) => {
 
 const MainView = () => {
   const dispatch = useDispatch();
-  const isAuth = localStorage.getItem('Token');
+  const isAuth = localStorage.getItem(LOCAL_STORE_TOKEN_NAME);
   const {
     articles,
     articlesCount,

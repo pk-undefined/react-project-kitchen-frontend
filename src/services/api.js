@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { LOCAL_STORE_TOKEN_NAME } from '../constants/consts';
 
 // const API_URL = 'http://localhost:3000/api';
 const API_ROOT = 'http://194.58.119.115:3000/api';
@@ -12,7 +13,7 @@ const axiosAPI = axios.create({
 
 axiosAPI.interceptors.request.use((config) => {
   /* eslint no-param-reassign: "error" */
-  config.headers.Authorization = `Token ${localStorage.getItem('Token')}`;
+  config.headers.Authorization = `Token ${localStorage.getItem(LOCAL_STORE_TOKEN_NAME)}`;
   return config;
 });
 

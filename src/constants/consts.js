@@ -17,3 +17,5 @@ export const ARTICLE_POLYFILL = {
 };
 
 export const COMMENTS_POLYFILL = [];
+export const LOCAL_STORE_TOKEN_NAME = 'Token';
+export const LOCAL_STORE_USER = 'User';

@@ -7,6 +7,7 @@ import {
   Container, Title, StyledLink, StyledForm,
 } from './common/styled-form';
 import { requestSaveUser, logout } from '../../store/authSlice';
+import { LOCAL_STORE_TOKEN_NAME } from '../../constants/consts';
 
 const SettingsForm = (props) => {
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ const SettingsForm = (props) => {
 
   const onClickLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('Token');
+    localStorage.removeItem(LOCAL_STORE_TOKEN_NAME);
   };
 
   return (
