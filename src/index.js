@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import App from './components/app/App';
 import { fontFaces } from './fonts/fonts';
@@ -99,9 +99,7 @@ ReactDOM.render(
       <Router>
         <Global />
         <Provider store={store}>
-          <Switch>
-            <Route path="/" component={App} />
-          </Switch>
+          <App />
         </Provider>
       </Router>
     </Suspense>
