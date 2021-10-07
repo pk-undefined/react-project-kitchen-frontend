@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ArticlePreview from '../article-preview/article-preview';
 import ListPagination from '../list-pagination/list-pagination';
 import { EmptyArticleList } from './styled-article-list';
 
 const ArticleList = (props) => {
+  const { t } = useTranslation();
   if (!props.articles) {
     return (
       <EmptyArticleList>Загрузка...</EmptyArticleList>
@@ -13,7 +15,7 @@ const ArticleList = (props) => {
   if (props.articles.length === 0) {
     return (
       <EmptyArticleList>
-        Здесь пока нет постов
+        {t('noArticles')}
       </EmptyArticleList>
     );
   }

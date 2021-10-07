@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ArticleList from '../article-list/article-list';
 import { Tab, TabsList } from './styled-main-view';
 import {
@@ -9,6 +10,7 @@ import {
   requestArticleFeed,
   requestArticleByTag,
 } from '../../store/articleSlice';
+import { LOCAL_STORE_TOKEN_NAME } from '../../constants/consts';
 
 const YourFeedTab = (props) => {
   const {
@@ -17,6 +19,7 @@ const YourFeedTab = (props) => {
     page,
     token,
   } = props;
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const clickHandler = (ev) => {
     ev.preventDefault();
@@ -34,13 +37,14 @@ const YourFeedTab = (props) => {
   return (
     <li>
       <Tab href="" active={tab === 'feed'} onClick={clickHandler}>
-        Ваша лента
+        {t('yourFeed')}
       </Tab>
     </li>
   );
 };
 
 const GlobalFeedTab = ({ tab, setPage, page }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const clickHandler = (ev) => {
     ev.preventDefault();
@@ -56,7 +60,7 @@ const GlobalFeedTab = ({ tab, setPage, page }) => {
   return (
     <li>
       <Tab href="" active={tab === 'all'} onClick={clickHandler}>
-        Лента
+        {t('feed')}
       </Tab>
     </li>
   );
@@ -83,7 +87,7 @@ const TagFilterTab = ({ tag, setPage, page }) => {
 
 const MainView = () => {
   const dispatch = useDispatch();
-  const isAuth = localStorage.getItem('Token');
+  const isAuth = localStorage.getItem(LOCAL_STORE_TOKEN_NAME);
   const {
     articles,
     articlesCount,
