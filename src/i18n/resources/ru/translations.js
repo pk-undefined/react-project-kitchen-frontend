@@ -1,6 +1,6 @@
 export const TRANSLATIONS_RU = {
-  projectName: 'Проектная кухня',
-  description: 'Место, где готовится новый опыт',
+  projectName: 'CHA-lle-NGE',
+  description: 'Бросай себе вызов и делись успехом!',
   popularTags: 'Популярные теги',
   feed: 'Лента',
   yourFeed: 'Ваша лента',
@@ -15,7 +15,7 @@ export const TRANSLATIONS_RU = {
   doYouWantToCreateAnAccount: 'Хотите создать аккаунт?',
   alreadyHaveAnAccount: 'Уже есть аккаунт?',
   userName: 'Имя пользователя',
-  noArticles: 'Здесь нет статей... пока.',
+  noArticles: 'Здесь нет постов... пока.',
   header: {
     mainPageName: 'Главная',
     SignIn: 'Войти',

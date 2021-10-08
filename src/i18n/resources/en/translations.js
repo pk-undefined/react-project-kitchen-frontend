@@ -1,6 +1,6 @@
 export const TRANSLATIONS_EN = {
-  projectName: 'Project kitchen',
-  description: 'A place where a new experience is being prepared',
+  projectName: 'CHA-lle-NGE',
+  description: 'Challenge yourself and share your success!',
   popularTags: 'Popular tags',
   feed: 'Line',
   yourFeed: 'Your feed',
