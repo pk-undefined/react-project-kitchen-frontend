@@ -11,7 +11,7 @@ export const Container = styled.div`
   margin: auto;
 `;
 
-export const StyledForm = styled.form`
+export const StyledForm = styled.div`
   width: 540px;
   display: flex;
   flex-direction: column;
