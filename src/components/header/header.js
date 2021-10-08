@@ -64,18 +64,21 @@ const LoggedInView = (props) => {
         {t(`${i18nElement}.Settings`)}
       </NavLink>
 
-      <NavLink to={`/@${props.currentUser.username}`}>
+      <NavLink to={`/@${props.currentUser ? props.currentUser.username : ''}`}>
         <UserAvatar className="avatar" />
         {' '}
-        {props.currentUser.username}
+        {props.currentUser ? props.currentUser.username : ''}
       </NavLink>
     </>
   );
 };
 
 const Header = () => {
-  const { user, isAuth } = useSelector((state) => state.auth);
-  const currentUser = Object.keys(user).length === 0 ? null : user;
+  const { currentUser, isAuth } = useSelector((state) => ({
+    isAuth: state.auth.isAuth,
+    currentUser: state.auth.user,
+  }));
+  // const currentUser = Object.keys(user).length === 0 ? null : user;
   const { t } = useTranslation();
 
   return (

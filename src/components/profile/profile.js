@@ -97,7 +97,7 @@ const Profile = (props) => {
           active={`${!!url.match('/favorites')}`}
           name="favorites"
         >
-          {t('profilePage.editProfile')}
+          {t('profilePage.favoritePosts')}
         </Tab>
       </TabsList>
 
