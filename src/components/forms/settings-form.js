@@ -93,7 +93,7 @@ const SettingsForm = (props) => {
           <Fieldset
             type="password"
             fieldName={t('settings.newPassword')}
-            fieldValue={user.password}
+            fieldValue={user.password ? user.password : ''}
             placeholder={t('settings.newPassword')}
             handleInputChange={updateState('password')}
             errors={props.errors}
