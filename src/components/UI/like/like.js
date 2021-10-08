@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import like from '../../../images/like.svg';
 import likeActive from '../../../images/like-active.svg';
 import {
@@ -8,24 +9,17 @@ import {
   requestArticleUnfavorite,
 } from '../../../store/articleSlice';
 
-// const mapDispatchToProps = (dispatch) => ({
-//   favorite: (slug) => dispatch({
-//     type: ARTICLE_FAVORITED,
-//     payload: agent.Articles.favorite(slug),
-//   }),
-//   unfavorite: (slug) => dispatch({
-//     type: ARTICLE_UNFAVORITED,
-//     payload: agent.Articles.unfavorite(slug),
-//   }),
-// });
-
 const Like = (props) => {
   const dispatch = useDispatch();
   const { article } = props;
+  const history = useHistory();
+  const { user } = useSelector((store) => store.auth);
 
   const handleClick = (ev) => {
     ev.preventDefault();
-    if (article.favorited) {
+    if (!user.username) {
+      history.replace({ pathname: '/login' });
+    } else if (article.favorited) {
       dispatch(requestArticleUnfavorite(article.slug));
     } else {
       dispatch(requestArticleFavorite(article.slug));
