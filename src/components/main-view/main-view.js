@@ -42,7 +42,7 @@ const MainView = () => {
       <TabsList>
         <YourFeedTab tab={tab} setPage={setPage} page={page} token={isAuth} />
         <GlobalFeedTab tab={tab} setPage={setPage} page={page} />
-        <TagFilterTab tag={tag} setPage={setPage} page={page} />
+        {!!tag ? <TagFilterTab tag={tag} setPage={setPage} page={page} /> : null}
       </TabsList>
 
       <ArticleList

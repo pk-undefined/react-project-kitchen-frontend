@@ -6,10 +6,6 @@ import { Tab } from '../../styled-main-view';
 const TagFilterTab = ({ tag, setPage, page }) => {
   const dispatch = useDispatch();
 
-  if (!tag) {
-    return null;
-  }
-
   dispatch(setTab(''));
   setPage(0);
 
