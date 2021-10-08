@@ -1,30 +1,36 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import icons from '../UI/icons/icons';
+import { TogglerLanguage } from './toggler-language/toggler-language';
 import {
-  StyledLink, StyledHeader, StyledContainer, StyledLogo, StyledNav,
+  StyledContainer,
+  StyledHeader,
+  StyledLogo,
+  StyledNav,
 } from './styled-header';
+import { NavLink } from './nav-link/nav-link';
+
+const i18nElement = 'header';
 
 const {
   HomeIcon, SettingsIcon, EditIcon, LogInIcon,
 } = icons;
 
-const NavLink = (props) => (
-  <li>
-    <StyledLink {...props}>{props.children}</StyledLink>
-  </li>
-);
+const LoggedOutView = () => {
+  const { t } = useTranslation();
 
-const LoggedOutView = () => (
-  <>
-    <NavLink to="/login">
-      <LogInIcon className="navIcon" />
-      {' '}
-      Войти
-    </NavLink>
-  </>
-);
+  return (
+    <>
+      <NavLink to="/login">
+        <LogInIcon className="navIcon" />
+        {' '}
+        {t(`${i18nElement}.SignIn`)}
+      </NavLink>
+    </>
+  );
+};
 // ИСПРАВИТЬ, так как 2 таких стиля (здесь и user-info)
 const UserAvatar = styled.div`
   width: 24px;
@@ -41,43 +47,50 @@ const UserAvatar = styled.div`
   }
 `;
 
-const LoggedInView = (props) => (
-  <>
-    <NavLink to="/editor">
-      <EditIcon className="navIcon" />
-      {' '}
-      Новая запись
-    </NavLink>
+const LoggedInView = (props) => {
+  const { t } = useTranslation();
 
-    <NavLink to="/settings">
-      <SettingsIcon className="navIcon" />
-      {' '}
-      Настройки
-    </NavLink>
+  return (
+    <>
+      <NavLink to="/editor">
+        <EditIcon className="navIcon" />
+        {' '}
+        {t(`${i18nElement}.NewEntry`)}
+      </NavLink>
 
-    <NavLink to={`/@${props.currentUser.username}`}>
-      <UserAvatar
-        avatar={props.currentUser.image}
-      />
-      {' '}
-      {props.currentUser.username}
-    </NavLink>
-  </>
-);
+      <NavLink to="/settings">
+        <SettingsIcon className="navIcon" />
+        {' '}
+        {t(`${i18nElement}.Settings`)}
+      </NavLink>
+
+      <NavLink to={`/@${props.currentUser ? props.currentUser.username : ''}`}>
+        <UserAvatar className="avatar" />
+        {' '}
+        {props.currentUser ? props.currentUser.username : ''}
+      </NavLink>
+    </>
+  );
+};
 
 const Header = () => {
-  const { user, isAuth } = useSelector((state) => state.auth);
-  const currentUser = Object.keys(user).length === 0 ? null : user;
+  const { currentUser, isAuth } = useSelector((state) => ({
+    isAuth: state.auth.isAuth,
+    currentUser: state.auth.user,
+  }));
+  // const currentUser = Object.keys(user).length === 0 ? null : user;
+  const { t } = useTranslation();
 
   return (
     <StyledHeader>
       <StyledContainer>
-        <StyledLogo to="/">Проектная кухня</StyledLogo>
+        <StyledLogo to="/">{t('projectName')}</StyledLogo>
         <StyledNav>
+          <TogglerLanguage />
           <NavLink to="/">
             <HomeIcon className="navIcon" />
             {' '}
-            Главная
+            {t(`${i18nElement}.mainPageName`)}
           </NavLink>
           {isAuth ? (
             <LoggedInView currentUser={currentUser} />

@@ -1,28 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/articleSlice';
+import { requestFollowUser, requestGetProfile, requestUnfollowUser } from '../../store/profileSlice';
 import ArticleList from '../article-list/article-list';
+import Tab from '../tab/tab';
+import Tags from '../tags/tags';
+import { Button } from '../UI/button/styled-button';
+import icons from '../UI/icons/icons';
 import {
-  ProfilePage,
-  TabsList,
+  Avatar,
+  ButtonText, Content, ProfilePage, Sidebar, StyledLink, TabsList,
   Title,
   UserProfile,
-  Avatar,
-  ButtonText,
-  StyledLink,
-  Sidebar,
-  Content,
 } from './styled-profile';
-import Tab from '../tab/tab';
-import { Button } from '../UI/button/styled-button';
-import Tags from '../tags/tags';
-import icons from '../UI/icons/icons';
-
-import { requestGetProfile, requestFollowUser, requestUnfollowUser } from '../../store/profileSlice';
-import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/articleSlice';
 
 const Profile = (props) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const history = useHistory();
   const { url } = useRouteMatch();
   const currentUsername = history.location.pathname.split('/')[1].slice(1);
@@ -75,14 +71,14 @@ const Profile = (props) => {
           <StyledLink to="/settings">
             <Button type="button" withoutMargin>
               <EditIcon />
-              Редактировать профиль
+              {t('profilePage.editProfile')}
             </Button>
           </StyledLink>
         ) : (
           <Button type="button" onClick={toggleFollow}>
             {profile && profile.following ? <MinusIcon /> : <PlusIcon />}
             <ButtonText>
-              {profile && profile.following ? 'Отписаться' : 'Подписаться'}
+              {profile && profile.following ? t('profilePage.unsubscribe') : t('profilePage.subscribe')}
             </ButtonText>
           </Button>
         )}
@@ -91,17 +87,17 @@ const Profile = (props) => {
       <TabsList>
         <Tab
           to={`/@${profile.username}`}
-          active={!url.match('/favorites')}
+          active={`${!url.match('/favorites')}`}
           name="all"
         >
-          Ваши посты
+          {t('profilePage.yourPosts')}
         </Tab>
         <Tab
           to={`/@${profile.username}/favorites`}
-          active={url.match('/favorites')}
+          active={`${!!url.match('/favorites')}`}
           name="favorites"
         >
-          Любимые посты
+          {t('profilePage.favoritePosts')}
         </Tab>
       </TabsList>
 

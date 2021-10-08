@@ -6,8 +6,7 @@ export const StyledTab = styled(Link)`
   color: var(--color-inactive);
   display: block;
   font-weight: bold;
-
-  ${(props) => props.active
+  ${(props) => props.active === 'true'
     && css`
       color: var(--color-default);
       box-shadow: inset 0 -2px 0 var(--color-accent);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Textarea from '../UI/textarea/textarea';
 import UserInfo from '../user-info/user-info';
 import { InfoContainer, StyledCommentForm } from './common/styled-form';
@@ -8,6 +9,7 @@ import { requestArticleCreateComment } from '../../store/articleSlice';
 
 const CommentForm = (props) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { currentUser } = props;
   const [body, setBody] = useState('');
   const handleChange = (e) => {
@@ -22,10 +24,10 @@ const CommentForm = (props) => {
 
   return (
     <StyledCommentForm onSubmit={sendComment}>
-      <Textarea value={body} onChange={handleChange} type="commentForm" placeholder="Написать комментарий" />
+      <Textarea value={body} onChange={handleChange} type="commentForm" placeholder={t('writeAComment')} />
       <InfoContainer>
         <UserInfo article={{ author: currentUser, createdAt: Date.now() }} isNotFullWidth />
-        <Button withoutMargin type="submit">Отправить комментарий</Button>
+        <Button withoutMargin type="submit">{t('sendAComment')}</Button>
       </InfoContainer>
     </StyledCommentForm>
   );

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { LOCAL_STORE_TOKEN_NAME, LOCAL_STORE_USER } from '../constants/consts';
 import AuthService from '../services/auth-service';
 
 export const requestRegister = createAsyncThunk(
@@ -30,12 +31,15 @@ export const requestCurrentUser = createAsyncThunk(
   },
 );
 
+const userInitial = !!localStorage.getItem(LOCAL_STORE_TOKEN_NAME)
+  ? JSON.parse(localStorage.getItem(LOCAL_STORE_USER)) : {};
+
 /* eslint no-param-reassign: ["error", { "props": false }] */
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: {},
-    isAuth: false,
+    user: userInitial,
+    isAuth: !!localStorage.getItem(LOCAL_STORE_TOKEN_NAME),
     isError: false,
     isLoading: false,
   },
@@ -53,21 +57,24 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.isAuth = true;
       state.isError = false;
-      localStorage.setItem('Token', action.payload.user.token);
+      localStorage.setItem(LOCAL_STORE_TOKEN_NAME, action.payload.user.token);
+      localStorage.setItem(LOCAL_STORE_USER, JSON.stringify(action.payload.user));
     },
     [requestRegister.rejected.toString()]: (state) => { state.isError = true; },
     [requestLogin.fulfilled.toString()]: (state, action) => {
       state.user = action.payload.user;
       state.isAuth = true;
       state.isError = false;
-      localStorage.setItem('Token', action.payload.user.token);
+      localStorage.setItem(LOCAL_STORE_TOKEN_NAME, action.payload.user.token);
+      localStorage.setItem(LOCAL_STORE_USER, JSON.stringify(action.payload.user));
     },
     [requestLogin.rejected.toString()]: (state) => { state.isError = true; },
     [requestCurrentUser.fulfilled.toString()]: (state, action) => {
       state.user = action.payload.user;
       state.isAuth = true;
       state.isError = false;
-      localStorage.setItem('Token', action.payload.user.token);
+      localStorage.setItem(LOCAL_STORE_TOKEN_NAME, action.payload.user.token);
+      localStorage.setItem(LOCAL_STORE_USER, JSON.stringify(action.payload.user));
     },
     [requestCurrentUser.rejected.toString()]: (state) => { state.isError = true; },
     [requestSaveUser.fulfilled.toString()]: (state, action) => {

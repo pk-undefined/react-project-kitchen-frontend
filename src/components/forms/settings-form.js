@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Fieldset from '../UI/fieldset/fieldset';
 import ButtonComponent from '../UI/button/button';
@@ -6,8 +7,10 @@ import {
   Container, Title, StyledLink, StyledForm,
 } from './common/styled-form';
 import { requestSaveUser, logout } from '../../store/authSlice';
+import { LOCAL_STORE_TOKEN_NAME } from '../../constants/consts';
 
 const SettingsForm = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     image: '',
@@ -47,34 +50,34 @@ const SettingsForm = (props) => {
 
   const onClickLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('Token');
+    localStorage.removeItem(LOCAL_STORE_TOKEN_NAME);
   };
 
   return (
     <Container>
       <StyledForm onSubmit={submitForm}>
-        <Title>Ваши настройки</Title>
+        <Title>{t('settings.yourSettings')}</Title>
         <fieldset>
           <Fieldset
             type="url"
-            fieldName="Изображение профиля"
+            fieldName={t('settings.profilePicture')}
             fieldValue={user.image}
-            placeholder="Изображение профиля"
+            placeholder={t('settings.profilePicture')}
             handleInputChange={updateState('image')}
             errors={props.errors}
           />
           <Fieldset
             type="text"
-            fieldName="Имя пользователя"
+            fieldName={t('userName')}
             fieldValue={user.username}
-            placeholder="Имя пользователя"
+            placeholder={t('userName')}
             handleInputChange={updateState('username')}
             errors={props.errors}
           />
           <Fieldset
             isTextarea
-            fieldName="Информация о вас"
-            placeholder="Информация о вас"
+            fieldName={t('settings.informationAboutYou')}
+            placeholder={t('settings.informationAboutYou')}
             fieldValue={user.bio}
             handleInputChange={updateState('bio')}
             errors={props.errors}
@@ -89,9 +92,9 @@ const SettingsForm = (props) => {
           />
           <Fieldset
             type="password"
-            fieldName="Новый пароль"
-            fieldValue={user.password}
-            placeholder="Новый пароль"
+            fieldName={t('settings.newPassword')}
+            fieldValue={user.password ? user.password : ''}
+            placeholder={t('settings.newPassword')}
             handleInputChange={updateState('password')}
             errors={props.errors}
             passwordField
@@ -99,11 +102,11 @@ const SettingsForm = (props) => {
         </fieldset>
 
         <ButtonComponent type="submit">
-          Сохранить
+          {t('save')}
         </ButtonComponent>
       </StyledForm>
       {/* временно инлайновый стайл пока не отключим library.css */}
-      <StyledLink to="/" onClick={onClickLogout} id="link" style={{ color: '#ff0000' }}>Выйти из аккаунта</StyledLink>
+      <StyledLink to="/" onClick={onClickLogout} id="link" style={{ color: '#ff0000' }}>{t('settings.logOut')}</StyledLink>
     </Container>
   );
 };

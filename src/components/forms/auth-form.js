@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ButtonComponent from '../UI/button/button';
 import {
   Container, StyledForm, Title, RegLink,
@@ -9,9 +10,21 @@ import { requestLogin, requestRegister } from '../../store/authSlice';
 
 const AuthForm = (props) => {
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   const {
     title, linkText, link, data,
   } = props;
+  const localizeTitle = useMemo(() => {
+    if (title === 'Войти') {
+      return t('signIn');
+    }
+
+    if (title === 'Зарегистрироваться') {
+      return t('signUp');
+    }
+
+    return t('signUp');
+  }, [title, i18n.language]);
   const submitForm = (ev) => {
     ev.preventDefault();
     if (title === 'Войти') {
@@ -31,14 +44,14 @@ const AuthForm = (props) => {
   return (
     <Container>
       <StyledForm>
-        <Title>{title}</Title>
+        <Title>{localizeTitle}</Title>
         <RegLink>
           <Link to={`/${link}`}>{linkText}</Link>
         </RegLink>
         <form onSubmit={submitForm}>
           <fieldset>{props.children}</fieldset>
           <ButtonComponent type="submit" disabled={props.inProgress}>
-            {title}
+            {localizeTitle}
           </ButtonComponent>
         </form>
       </StyledForm>

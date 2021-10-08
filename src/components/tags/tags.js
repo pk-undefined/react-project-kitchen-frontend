@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { TagsTitle, TagsList, Tag } from './styled-tags';
 import {
   setTag,
@@ -7,6 +8,7 @@ import {
 } from '../../store/articleSlice';
 
 const Tags = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { tags } = useSelector((state) => state.article.articleList);
   const activeTag = useSelector((state) => state.article.articleList.tag);
@@ -21,7 +23,7 @@ const Tags = () => {
 
   return (
     <>
-      <TagsTitle>Популярные теги</TagsTitle>
+      <TagsTitle>{t('popularTags')}</TagsTitle>
       <TagsList>
         {tags
           ? tags.map((tag) => {
