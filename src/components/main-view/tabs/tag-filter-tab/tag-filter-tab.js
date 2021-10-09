@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { requestArticleByTag, setTab } from '../../../../store/articleSlice';
 import { Tab } from '../../styled-main-view';
 
-const TagFilterTab = ({ tag, setPage, page }) => {
+const TagFilterTab = memo(({ tag, setPage, page }) => {
   const dispatch = useDispatch();
 
-  dispatch(setTab(''));
-  setPage(0);
+  useEffect(() => {
+    dispatch(setTab(''));
+    setPage(0);
+  }, []);
 
   useEffect(() => {
     dispatch(requestArticleByTag({ tag, page }));
@@ -21,6 +23,6 @@ const TagFilterTab = ({ tag, setPage, page }) => {
       </Tab>
     </li>
   );
-};
+});
 
 export default TagFilterTab;
