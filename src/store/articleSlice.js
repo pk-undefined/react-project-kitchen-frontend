@@ -146,7 +146,7 @@ const articleSlice = createSlice({
     },
     [requestArticleAllPage.rejected.toString()]: (state) => { state.isError = true; },
     [requestArticleFeed.fulfilled.toString()]: (state, action) => {
-      state.articleList.articles = action.payload.articles;
+      state.articleList.articles = action.payload.articles.reverse();
       state.articleList.articlesCount = action.payload.articlesCount;
       state.isError = false;
     },

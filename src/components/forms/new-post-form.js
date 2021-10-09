@@ -69,6 +69,8 @@ const NewPostForm = () => {
       const newTagList = state.tagList.toLowerCase().replace(/\s+/g, '').split(',');
       dispatch(requestArticleCreate({ ...state, tagList: newTagList }));
     }
+
+    history.push(`/article/${article?.slug}`);
   };
 
   return (
