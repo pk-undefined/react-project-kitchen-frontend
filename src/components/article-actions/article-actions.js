@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { requestArticleDeleted } from '../../store/articleSlice';
@@ -8,10 +8,12 @@ import { StyledActions, ButtonText } from './styled-article-actions';
 
 const ArticleActions = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { article } = props;
   const { EditIcon, DeleteIcon } = icons;
   const del = () => {
     dispatch(requestArticleDeleted(article.slug));
+    history.push('/');
   };
   if (props.canModify) {
     return (

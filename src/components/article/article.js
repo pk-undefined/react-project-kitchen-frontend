@@ -25,10 +25,8 @@ const Article = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const { article, comments } = useSelector((state) => state.article.article);
 
-  const isArticle = Object.keys(article).length > 0;
-
   return (
-    article && isArticle ? (
+    article && Object.keys(article).length > 0 ? (
       <StyledArticle>
         <ArticleMeta
           article={article}
