@@ -16,6 +16,9 @@ export const TRANSLATIONS_RU = {
   alreadyHaveAnAccount: 'Уже есть аккаунт?',
   userName: 'Имя пользователя',
   noArticles: 'Здесь нет постов... пока.',
+  wrongText: 'Что-то пошло не так...',
+  loadingText: 'Загрузка...',
+  tags: 'Тэги:',
   header: {
     mainPageName: 'Главная',
     SignIn: 'Войти',

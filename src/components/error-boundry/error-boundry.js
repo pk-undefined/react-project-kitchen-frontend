@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import Info from '../info/info';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -20,14 +21,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.errorInfo) {
       // Error path
       return (
-        <div>
-          <h2>Something went wrong.</h2>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.error && this.state.error.toString()}
-            <br />
-            {this.state.errorInfo.componentStack}
-          </details>
-        </div>
+        <Info error={this.state.error} errorInfo={this.state.errorInfo} />
       );
     }
     // Normally, just render children

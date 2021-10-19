@@ -16,6 +16,9 @@ export const TRANSLATIONS_EN = {
   alreadyHaveAnAccount: 'Already have an account?',
   userName: 'User name',
   noArticles: 'No articles are here... yet.',
+  wrongText: 'Something went wrong...',
+  loadingText: 'Loading...',
+  tags: 'Tags:',
   header: {
     mainPageName: 'Main',
     SignIn: 'Sign in',
