@@ -5,6 +5,7 @@ import { requestCurrentUser } from '../../store/authSlice';
 import { useInitialI18nFromCookie } from '../../i18n/hooks/use-initial-i18n-from-cookie';
 import { RoutesRoot } from '../../routes/routes';
 import { LOCAL_STORE_TOKEN_NAME } from '../../constants/consts';
+import ErrorBoundry from '../error-boundry/error-boundry';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -16,10 +17,13 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
-      <Header />
-      <RoutesRoot />
-    </div>
+    <ErrorBoundry>
+      <div>
+        <Header />
+        <RoutesRoot />
+      </div>
+    </ErrorBoundry>
+
   );
 };
 
