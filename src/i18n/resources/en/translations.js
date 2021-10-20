@@ -17,6 +17,7 @@ export const TRANSLATIONS_EN = {
   userName: 'User name',
   noArticles: 'No articles are here... yet.',
   wrongText: 'Something went wrong...',
+  wrongText2: 'We are fixing this',
   loadingText: 'Loading...',
   tags: 'Tags:',
   header: {

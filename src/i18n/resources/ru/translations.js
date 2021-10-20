@@ -17,6 +17,7 @@ export const TRANSLATIONS_RU = {
   userName: 'Имя пользователя',
   noArticles: 'Здесь нет постов... пока.',
   wrongText: 'Что-то пошло не так...',
+  wrongText2: 'Мы уже исправляем это',
   loadingText: 'Загрузка...',
   tags: 'Тэги:',
   header: {
