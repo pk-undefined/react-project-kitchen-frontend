@@ -20,6 +20,7 @@ export const UserProfile = styled.div`
 export const Avatar = styled.img`
   width: 120px;
   height: 120px;
+  object-fit: cover;
 `;
 
 export const Title = styled.h1`

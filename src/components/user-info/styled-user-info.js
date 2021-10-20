@@ -15,13 +15,18 @@ export const UserAvatar = styled(Link)`
   height: 40px;
   grid-column: 1;
   grid-row: 1/3;
-  background: center/40px 40px url(${(props) => props.avatar}) no-repeat;
   transition: opacity 0.5s linear;
 
   &:hover {
     opacity: 0.7;
     cursor: pointer;
   }
+`;
+
+export const Avatar = styled.img`
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 `;
 
 export const AuthorLink = styled(Link)`
