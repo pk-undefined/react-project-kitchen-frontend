@@ -25,6 +25,8 @@ const NewPostForm = () => {
     image: '',
   });
 
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+
   useEffect(() => {
     if (currentArticle) {
       setState({
@@ -33,6 +35,10 @@ const NewPostForm = () => {
       });
     }
   }, [article]);
+
+  useEffect(() => {
+    if (article && isSubmitSuccess) { history.push(`/article/${article.slug}`); }
+  }, [isSubmitSuccess, article]);
 
   const onChange = (event) => {
     const { target } = event;
@@ -69,8 +75,7 @@ const NewPostForm = () => {
       const newTagList = state.tagList.toLowerCase().replace(/\s+/g, '').split(',');
       dispatch(requestArticleCreate({ ...state, tagList: newTagList }));
     }
-
-    history.push(`/article/${article?.slug}`);
+    setIsSubmitSuccess(true);
   };
 
   return (

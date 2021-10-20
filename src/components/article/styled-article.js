@@ -25,3 +25,12 @@ export const TagList = styled.ul`
 export const TagItem = styled.li`
   font-size: 12px;
 `;
+
+export const LoadingText = styled.h3`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  min-width: 200px;
+  min-height: 120px;
+`;
