@@ -43,17 +43,15 @@ const AuthForm = (props) => {
 
   return (
     <Container>
-      <StyledForm>
+      <StyledForm onSubmit={submitForm}>
         <Title>{localizeTitle}</Title>
         <RegLink>
           <Link to={`/${link}`}>{linkText}</Link>
         </RegLink>
-        <form onSubmit={submitForm}>
-          <fieldset>{props.children}</fieldset>
-          <ButtonComponent type="submit" disabled={props.inProgress}>
-            {localizeTitle}
-          </ButtonComponent>
-        </form>
+        <fieldset>{props.children}</fieldset>
+        <ButtonComponent type="submit" disabled={props.inProgress}>
+          {localizeTitle}
+        </ButtonComponent>
       </StyledForm>
     </Container>
   );
