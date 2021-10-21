@@ -24,7 +24,7 @@ export const LoggedInView = memo((props) => {
       </NavLink>
 
       <NavLink to={`/@${props.currentUser ? props.currentUser.username : ''}`}>
-        <UserAvatar className="avatar" defaultImage="https://static.productionready.io/images/smiley-cyrus.jpg" />
+        <UserAvatar className="avatar" avatar={props.currentUser.image} defaultImage="https://static.productionready.io/images/smiley-cyrus.jpg" />
         {' '}
         {props.currentUser ? props.currentUser.username : ''}
       </NavLink>
