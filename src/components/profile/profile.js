@@ -6,12 +6,11 @@ import { requestArticleByAuthor, requestArticleFavoritedBy } from '../../store/a
 import { requestFollowUser, requestGetProfile, requestUnfollowUser } from '../../store/profileSlice';
 import ArticleList from '../article-list/article-list';
 import Tab from '../tab/tab';
-import Tags from '../tags/tags';
 import { Button } from '../UI/button/styled-button';
 import icons from '../UI/icons/icons';
 import {
   Avatar,
-  ButtonText, Content, ProfilePage, Sidebar, StyledLink, TabsList,
+  ButtonText, Content, ProfilePage, StyledLink, TabsList,
   Title,
   UserProfile,
 } from './styled-profile';
@@ -109,14 +108,6 @@ const Profile = (props) => {
           articles={articles}
           articlesCount={articlesCount}
         />
-
-        <Sidebar>
-          <Tags
-            activeTag={props.tag}
-            tags={props.tags}
-            onClickTag={props.onClickTag}
-          />
-        </Sidebar>
       </Content>
     </ProfilePage>
   );

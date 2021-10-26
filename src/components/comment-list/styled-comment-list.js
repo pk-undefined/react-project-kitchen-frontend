@@ -4,4 +4,5 @@ export const StyledCommentList = styled.ul`
   display: flex;
   flex-direction: column;
   list-style: none;
+  margin-bottom: 30px;
 `;
